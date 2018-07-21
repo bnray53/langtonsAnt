@@ -57,6 +57,12 @@ function mousePressed() {
     //If the user is inside canvas  
     if (mouseX < width && mouseY < height) {
         console.log("Inside canvas area");
+        var mouseClickX=mouseX-(mouseX%20);
+        var mouseClickY=mouseY-(mouseY%20);
+        rect(mouseClickX, mouseClickY, resolution, resolution);
+        fill("red");
+        console.log(mouseX, mouseY);
+        console.log(mouseClickX, mouseClickY);
     }else {
     //If user is outside canvas  
         console.log("Please click inside the canvas area");
