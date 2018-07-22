@@ -4,6 +4,7 @@ var numOfObjects = 0;
 var gridXSize;
 var gridYSize;
 var antPlacedFlag=false;
+var ant;
 
 
 function setup() {
@@ -19,7 +20,7 @@ function setup() {
 function draw() {
     //Put ant movement here if enough ants have been placed
     if(antPlacedFlag){
-        //stuff
+    
     }
 }
 
@@ -29,7 +30,6 @@ function createGrid() {
         gridArray[i] = [];
         for (j = 0; j < gridYSize; j++) {
             fillGrid(i, j);
-            
         }
     }
     console.log(numOfObjects);
@@ -72,10 +72,19 @@ function mousePressed() {
             console.log("Inside canvas area");
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
-            fill("red");
-            rect(mouseClickX, mouseClickY, resolution, resolution);
+            //this rect should be associated with ant objects so we can move it
+            //fill("red");
+           // rect(mouseClickX, mouseClickY, resolution, resolution);
+            //Call constructor with pixel x and y using mouseClickX and mouseClickY
+            //and then when needed get the grid coordinates from Ant class functions
+            ant=new Ant(mouseClickX, mouseClickY);
+            ant.drawSquare(mouseClickX, mouseClickY);
             console.log(mouseX, mouseY);
             console.log(mouseClickX, mouseClickY);
+            console.log("Ant object: "+ ant.x, ant.y);
+                var tempx=ant.getGridX();
+                var tempy=ant.getGridY();
+                console.log(tempx, tempy);
             console.log(mouseClickX/resolution, mouseClickY/resolution);
             console.log(gridArray[(mouseClickX/resolution)][((mouseClickY)/resolution)].ind);
             antPlacedFlag=true;
@@ -88,4 +97,28 @@ function mousePressed() {
 
 function myFunction(){
     console.log("inside myFunction");
+}
+
+class Ant{
+    constructor(x,y){
+        this.x=x;
+        this.y=y;
+    }
+    //getGridY
+    getGridX(){
+        var gridX=this.x/resolution;
+        return gridX;
+    }
+    //getGridX
+    getGridY(){
+        var gridY=this.y/resolution;
+        return gridY;
+    }
+    //drawSquare/change posistion send pixels not grid points
+    drawSquare(x,y){
+        fill("red");
+        rect(x,y,resolution,resolution);
+    }
+
+
 }
