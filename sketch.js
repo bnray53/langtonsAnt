@@ -72,6 +72,7 @@ function mousePressed() {
             var mouseClickY=mouseY-(mouseY%resolution);
             //Call constructor with pixel x and y using mouseClickX and mouseClickY
             //and then when needed get the grid coordinates from Ant class functions
+            //default square facing north
             ant=new Ant(mouseClickX, mouseClickY);
             ant.drawSquareNorth(ant.x, ant.y);
             console.log(mouseX, mouseY);
@@ -93,12 +94,68 @@ function mousePressed() {
 function myFunction(){
     if(antPlacedFlag){
         //Place ant movement logic here
-        console.log("inside myFunction");
-            refillGrid();
-            ant.x = ant.x + 20;
-            ant.drawSquareNorth(ant.x, ant.y);
-            setTimeout(myFunction, 1500); 
-            console.log(ant.direction);
+           // refillGrid();
+            //ant.x = ant.x + 20;
+           // ant.drawSquareNorth(ant.x, ant.y);
+            
+           // console.log(ant.direction);
+
+            //ant logic
+            if(ant.direction==0){
+                if(gridArray[ant.getGridX()][ant.getGridY()-1].ind==1){
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    refillGrid();
+                    ant.x=ant.x+20;
+                    ant.drawSquareEast(ant.x,ant.y);
+                }else{
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    refillGrid();
+                    ant.x=ant.x-20;
+                    ant.drawSquareWest(ant.x,ant.y);
+                }
+            }
+            else if(ant.direction==90){
+                if(gridArray[ant.getGridX()+1][ant.getGridY()].ind==1){
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    refillGrid();
+                    ant.y=ant.y+20;
+                    ant.drawSquareSouth(ant.x,ant.y);
+                }else{
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    refillGrid();
+                    ant.y=ant.y-20;
+                    ant.drawSquareNorth(ant.x,ant.y);
+                }
+            }
+            else if(ant.direction==180){
+                if(gridArray[ant.getGridX()][ant.getGridY()+1].ind==1){
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    refillGrid();
+                    ant.x=ant.x-20;
+                    ant.drawSquareWest(ant.x,ant.y);
+                }else{
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    refillGrid();
+                    ant.x=ant.x+20;
+                    ant.drawSquareEast(ant.x,ant.y);
+                }
+            }
+            else if(ant.direction==270){
+                if(gridArray[ant.getGridX()-1][ant.getGridY()].ind==1){
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    refillGrid();
+                    ant.y=ant.y-20;
+                    ant.drawSquareNorth(ant.x,ant.y);
+                }else{
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    refillGrid();
+                    ant.y=ant.y+20;
+                    ant.drawSquareSouth(ant.x,ant.y); 
+                }
+            }else{
+                console.log("Error in ant brain");
+            }
+            //setTimeout(myFunction, 1500);   
     }          
 }
 
