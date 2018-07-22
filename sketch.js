@@ -7,6 +7,8 @@ var antPlacedFlag=false;
 var ant;
 
 
+
+
 function setup() {
     // put setup code here
     createCanvas(800, 400);
@@ -18,10 +20,6 @@ function setup() {
 }
 
 function draw() {
-    //Put ant movement here if enough ants have been placed
-    if(antPlacedFlag){
-    
-    }
 }
 
 function createGrid() {
@@ -45,12 +43,12 @@ function fillGrid(x, y) {
     if (rand == 1) {
         fill("black");
         rect((fx * resolution), (fy * resolution), resolution, resolution);
-        indicator = "black";
+        indicator = 0;
         gridArray[fx][fy] = new GridContent(indicator);
     } else {
         fill("white");
         rect((fx * resolution), (fy * resolution), resolution, resolution);
-        indicator = "white";
+        indicator = 1;
         gridArray[fx][fy] = new GridContent(indicator);
     }
     
@@ -72,13 +70,10 @@ function mousePressed() {
             console.log("Inside canvas area");
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
-            //this rect should be associated with ant objects so we can move it
-            //fill("red");
-           // rect(mouseClickX, mouseClickY, resolution, resolution);
             //Call constructor with pixel x and y using mouseClickX and mouseClickY
             //and then when needed get the grid coordinates from Ant class functions
             ant=new Ant(mouseClickX, mouseClickY);
-            ant.drawSquare(mouseClickX, mouseClickY);
+            ant.drawSquare(ant.x, ant.y);
             console.log(mouseX, mouseY);
             console.log(mouseClickX, mouseClickY);
             console.log("Ant object: "+ ant.x, ant.y);
@@ -96,7 +91,13 @@ function mousePressed() {
 }
 
 function myFunction(){
-    console.log("inside myFunction");
+    if(antPlacedFlag){
+        console.log("inside myFunction");
+            refillGrid();
+            ant.x = ant.x + 20;
+            ant.drawSquare(ant.x, ant.y);
+            setTimeout(myFunction, 1500); 
+    }          
 }
 
 class Ant{
@@ -119,6 +120,18 @@ class Ant{
         fill("red");
         rect(x,y,resolution,resolution);
     }
+}
 
-
+function refillGrid(){
+    for (i = 0; i < gridXSize; i++) {
+        for (j = 0; j < gridYSize; j++) {
+            if (gridArray[i][j].ind == 1) {
+                fill("white");
+                rect(i*resolution, j*resolution, resolution, resolution);
+            } else {
+                fill("black");
+                rect(i*resolution, j*resolution, resolution, resolution);
+            }
+        }
+    }    
 }
