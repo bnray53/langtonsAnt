@@ -3,6 +3,7 @@ var gridArray;
 var numOfObjects = 0;
 var gridXSize;
 var gridYSize;
+var antPlacedFlag=false;
 
 
 function setup() {
@@ -16,7 +17,10 @@ function setup() {
 }
 
 function draw() {
-
+    //Put ant movement here if enough ants have been placed
+    if(antPlacedFlag){
+        //stuff
+    }
 }
 
 function createGrid() {
@@ -25,23 +29,31 @@ function createGrid() {
         gridArray[i] = [];
         for (j = 0; j < gridYSize; j++) {
             fillGrid(i, j);
+            
         }
     }
     console.log(numOfObjects);
 }
 
 function fillGrid(x, y) {
-    rect((x * resolution), (y * resolution), resolution, resolution);
+    var fx=x;
+    var fy=y;
+    //Had to place fill above rect in the if statements to fix off by one
+    //error in the first row.
     var indicator;
     var rand = floor(random(0, 2));
     if (rand == 1) {
         fill("black");
-        indicator = 1;
+        rect((fx * resolution), (fy * resolution), resolution, resolution);
+        indicator = "black";
+        gridArray[fx][fy] = new GridContent(indicator);
     } else {
         fill("white");
-        indicator = 0;
+        rect((fx * resolution), (fy * resolution), resolution, resolution);
+        indicator = "white";
+        gridArray[fx][fy] = new GridContent(indicator);
     }
-    gridArray[x][y] = new GridContent(indicator);
+    
     numOfObjects++;
     return;
 }
@@ -56,15 +68,24 @@ class GridContent {
 function mousePressed() {
     //If the user is inside canvas  
     if (mouseX < width && mouseY < height) {
-        console.log("Inside canvas area");
-        var mouseClickX=mouseX-(mouseX%20);
-        var mouseClickY=mouseY-(mouseY%20);
-        rect(mouseClickX, mouseClickY, resolution, resolution);
-        fill("red");
-        console.log(mouseX, mouseY);
-        console.log(mouseClickX, mouseClickY);
+        if(!antPlacedFlag){
+            console.log("Inside canvas area");
+            var mouseClickX=mouseX-(mouseX%resolution);
+            var mouseClickY=mouseY-(mouseY%resolution);
+            fill("red");
+            rect(mouseClickX, mouseClickY, resolution, resolution);
+            console.log(mouseX, mouseY);
+            console.log(mouseClickX, mouseClickY);
+            console.log(mouseClickX/resolution, mouseClickY/resolution);
+            console.log(gridArray[(mouseClickX/resolution)][((mouseClickY)/resolution)].ind);
+            antPlacedFlag=true;
+        }    
     }else {
     //If user is outside canvas  
         console.log("Please click inside the canvas area");
     }
+}
+
+function myFunction(){
+    console.log("inside myFunction");
 }
