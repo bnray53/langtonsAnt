@@ -141,21 +141,13 @@ function myFunction(){
     if(antPlacedFlag){
             //ant logic
             if(ant.direction==0){
-                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
                     refillGrid();
                     ant.x=ant.x+resolution;
                     ant.drawSquareEast(ant.x,ant.y);
                 }else{
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     refillGrid();
                     ant.x=ant.x-resolution;
                     ant.drawSquareWest(ant.x,ant.y);
@@ -163,20 +155,12 @@ function myFunction(){
             }
             else if(ant.direction==90){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
                     refillGrid();
                     ant.y=ant.y+resolution;
                     ant.drawSquareSouth(ant.x,ant.y);
                 }else{
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     refillGrid();
                     ant.y=ant.y-resolution;
                     ant.drawSquareNorth(ant.x,ant.y);
@@ -184,20 +168,12 @@ function myFunction(){
             }
             else if(ant.direction==180){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
                     refillGrid();
                     ant.x=ant.x-resolution;
                     ant.drawSquareWest(ant.x,ant.y);
                 }else{
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     refillGrid();
                     ant.x=ant.x+resolution;
                     ant.drawSquareEast(ant.x,ant.y);
@@ -205,20 +181,12 @@ function myFunction(){
             }
             else if(ant.direction==270){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
                     refillGrid();
                     ant.y=ant.y-resolution;
                     ant.drawSquareNorth(ant.x,ant.y);
                 }else{
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    }
+                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     refillGrid();
                     ant.y=ant.y+resolution;
                     ant.drawSquareSouth(ant.x,ant.y); 
