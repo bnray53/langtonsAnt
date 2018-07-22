@@ -11,7 +11,7 @@ var ant;
 
 function setup() {
     // put setup code here
-    createCanvas(800, 400);
+    createCanvas(1200, 460);
     background(100);
     gridXSize = width / resolution;
     gridYSize = height / resolution;
@@ -102,7 +102,7 @@ function myFunction(){
     if(antPlacedFlag){
             //ant logic
             if(ant.direction==0){
-                if(gridArray[ant.getGridX()][ant.getGridY()-1].ind==1){
+                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
                         gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     }else{
@@ -123,7 +123,7 @@ function myFunction(){
                 }
             }
             else if(ant.direction==90){
-                if(gridArray[ant.getGridX()+1][ant.getGridY()].ind==1){
+                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
                         gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     }else{
@@ -144,7 +144,7 @@ function myFunction(){
                 }
             }
             else if(ant.direction==180){
-                if(gridArray[ant.getGridX()][ant.getGridY()+1].ind==1){
+                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
                         gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     }else{
@@ -165,7 +165,7 @@ function myFunction(){
                 }
             }
             else if(ant.direction==270){
-                if(gridArray[ant.getGridX()-1][ant.getGridY()].ind==1){
+                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
                         gridArray[ant.getGridX()][ant.getGridY()].ind=1;
                     }else{
