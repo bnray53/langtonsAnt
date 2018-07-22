@@ -39,7 +39,12 @@ function fillGrid(x, y) {
     //Had to place fill above rect in the if statements to fix off by one
     //error in the first row.
     var indicator;
-    var rand = floor(random(0, 2));
+    fill("white");
+    rect((fx * resolution), (fy * resolution), resolution, resolution);
+    indicator = 1;
+    gridArray[fx][fy] = new GridContent(indicator);
+    //below gives black and white squares
+    /*var rand = floor(random(0, 2));
     if (rand == 1) {
         fill("black");
         rect((fx * resolution), (fy * resolution), resolution, resolution);
@@ -50,7 +55,9 @@ function fillGrid(x, y) {
         rect((fx * resolution), (fy * resolution), resolution, resolution);
         indicator = 1;
         gridArray[fx][fy] = new GridContent(indicator);
-    }
+    }*/
+
+
     
     numOfObjects++;
     return;
@@ -93,22 +100,23 @@ function mousePressed() {
 
 function myFunction(){
     if(antPlacedFlag){
-        //Place ant movement logic here
-           // refillGrid();
-            //ant.x = ant.x + 20;
-           // ant.drawSquareNorth(ant.x, ant.y);
-            
-           // console.log(ant.direction);
-
             //ant logic
             if(ant.direction==0){
                 if(gridArray[ant.getGridX()][ant.getGridY()-1].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.x=ant.x+20;
                     ant.drawSquareEast(ant.x,ant.y);
                 }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.x=ant.x-20;
                     ant.drawSquareWest(ant.x,ant.y);
@@ -116,12 +124,20 @@ function myFunction(){
             }
             else if(ant.direction==90){
                 if(gridArray[ant.getGridX()+1][ant.getGridY()].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.y=ant.y+20;
                     ant.drawSquareSouth(ant.x,ant.y);
                 }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.y=ant.y-20;
                     ant.drawSquareNorth(ant.x,ant.y);
@@ -129,12 +145,20 @@ function myFunction(){
             }
             else if(ant.direction==180){
                 if(gridArray[ant.getGridX()][ant.getGridY()+1].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.x=ant.x-20;
                     ant.drawSquareWest(ant.x,ant.y);
                 }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.x=ant.x+20;
                     ant.drawSquareEast(ant.x,ant.y);
@@ -142,12 +166,20 @@ function myFunction(){
             }
             else if(ant.direction==270){
                 if(gridArray[ant.getGridX()-1][ant.getGridY()].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.y=ant.y-20;
                     ant.drawSquareNorth(ant.x,ant.y);
                 }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==0){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                    }
                     refillGrid();
                     ant.y=ant.y+20;
                     ant.drawSquareSouth(ant.x,ant.y); 
@@ -155,7 +187,7 @@ function myFunction(){
             }else{
                 console.log("Error in ant brain");
             }
-            //setTimeout(myFunction, 1500);   
+            setTimeout(myFunction, 250);   
     }          
 }
 
