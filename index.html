@@ -1,25 +1,88 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
+    <title>Langton's Ant| Home</title>
+
+    <meta name="author" content="Benjamin Ray" />
+    <meta name="date" content="Summer 2018" />
     <meta charset="utf-8">
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
     <style>
-     body {
-       padding: 0;
-       margin: 0;
-       } 
-      #button{
-        clear: right;
-        float: right;
-        margin-right: 130px;
-        margin-top: 30px;
-      } 
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: rgb(82, 78, 78);
+        }
+
+        #myContainer {
+            border: 1px solid white;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #readOut {
+            margin-top: 30px;
+        }
+
+        #cellData {
+            color: white;
+        }
+
+        #canvasDiv {
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
     <script src="p5.min.js"></script>
     <script src="p5.dom.min.js"></script>
     <script src="sketch.js"></script>
-  </head>
-  <body>
-      <input id="button" type="button" onclick="myFunction()" value="MyFunction"></input>
-  </body>
+</head>
+
+<body>
+    <div class="container-fluid text-center" id="readout">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" onclick="myFunction()">Start</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" onclick="window.location.reload()">Reset</button>
+            </div>
+            <!--This will eventually be drop down menu for other chaos game pages-->
+            <!--<div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Action <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a href="#">Future Page</a></li>
+                                        <li><a href="#">Future Page</a></li>
+                                        <li><a href="#">Future Page</a></li>                                       
+                                      </ul>
+                        </div>-->
+        </div>
+
+        <div id="canvasDiv">
+            <div id="myContainer"></div>
+        </div>
+        <div class="container-fluid text-center" id="readOut">
+            <div id="cellData">
+                <p id="cell1">Number of Cycles</p>
+                <p id="cell2">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
