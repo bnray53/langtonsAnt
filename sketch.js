@@ -73,10 +73,10 @@ function mousePressed() {
             //Call constructor with pixel x and y using mouseClickX and mouseClickY
             //and then when needed get the grid coordinates from Ant class functions
             ant=new Ant(mouseClickX, mouseClickY);
-            ant.drawSquare(ant.x, ant.y);
+            ant.drawSquareNorth(ant.x, ant.y);
             console.log(mouseX, mouseY);
             console.log(mouseClickX, mouseClickY);
-            console.log("Ant object: "+ ant.x, ant.y);
+            console.log("Ant object: "+ ant.x, ant.y, ant.direction);
                 var tempx=ant.getGridX();
                 var tempy=ant.getGridY();
                 console.log(tempx, tempy);
@@ -92,11 +92,13 @@ function mousePressed() {
 
 function myFunction(){
     if(antPlacedFlag){
+        //Place ant movement logic here
         console.log("inside myFunction");
             refillGrid();
             ant.x = ant.x + 20;
-            ant.drawSquare(ant.x, ant.y);
+            ant.drawSquareNorth(ant.x, ant.y);
             setTimeout(myFunction, 1500); 
+            console.log(ant.direction);
     }          
 }
 
@@ -104,6 +106,7 @@ class Ant{
     constructor(x,y){
         this.x=x;
         this.y=y;
+        this.direction=0;
     }
     //getGridY
     getGridX(){
@@ -115,10 +118,42 @@ class Ant{
         var gridY=this.y/resolution;
         return gridY;
     }
-    //drawSquare/change posistion send pixels not grid points
-    drawSquare(x,y){
+
+    //draw square with north arrow
+    drawSquareNorth(x,y){
         fill("red");
         rect(x,y,resolution,resolution);
+        line(x+10, y+18, x+10, y+2);
+        line(x+2, y+10, x+10, y+2);
+        line(x+10, y+2, x+18, y+10); 
+        this.direction=0;   
+    }
+    //draw square with south arrow
+    drawSquareSouth(x,y){
+        fill("red");
+        rect(x,y,resolution,resolution);
+        line(x+10, y+18, x+10, y+2);
+        line(x+2, y+10, x+10, y+18);
+        line(x+10, y+18, x+18, y+10); 
+        this.direction=180;   
+    }
+    //draw square with east arrow
+    drawSquareEast(x,y){
+        fill("red");
+        rect(x,y,resolution,resolution);
+        line(x+2, y+10, x+18, y+10);
+        line(x+18, y+10, x+10, y+18);
+        line(x+10, y+2, x+18, y+10);
+        this.direction=90;    
+    }
+    //draw square with west arrow
+    drawSquareWest(x,y){
+        fill("red");
+        rect(x,y,resolution,resolution);
+        line(x+2, y+10, x+18, y+10);
+        line(x+2, y+10, x+10, y+2);
+        line(x+10, y+18, x+2, y+10); 
+        this.direction=270;   
     }
 }
 
