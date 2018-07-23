@@ -14,6 +14,6 @@
 [Langton's Ant](http://www.biketq.com/langtonsAnt.html "Langton's Ant")
 
 ### How To
-- Place you&apos;re starting point anywhere on the canvas.
+- Place your starting point anywhere on the canvas.
 - Hit the start button.
 - To reset the simulation hit the reset button.
