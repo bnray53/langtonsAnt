@@ -1,0 +1,15 @@
+Things To Do:
+
+Configure so canvas is set automatically to device width
+
+Add writeup about the math behind the process
+
+Write some kind of horizontal control panel for adjusting and displpaying various parameters to replace the single paragraph cells
+
+Add aditional pages for Mandlebrot Set, Cantor Set, Koch Lines, and Barnselys Fern
+
+Have display for error message that are currently being logged to console 
+
+Allow user control over speed of iterations
+
+Add ability to place multiple ants
