@@ -6,12 +6,17 @@ var gridArray;
 var gridXSize;
 var gridYSize;
 var ant;
+var cycleSpeed;
 
 //keeping track of number of movements made by ant
 var numOfCycles = 0;
 
 //flag for whether or not the ant has been placed on the grid
 var antPlacedFlag=false;
+
+//Flag for when to change cycle speed to cycle count
+var antStarted = false;
+
 
 /*Class for objects residing in the 2-dimensional array, only atrribute they have is .ind which acts as 
 an on/off or 1/0 indicator of the grid's state*/
@@ -87,7 +92,7 @@ class Ant{
 function setup() {
     /* canvas dimensions should be able to be divided evenly by resolution if you want grid squares that fill
     the canvas equally*/
-    var myCanvas = createCanvas(1200, 450);
+    var myCanvas = createCanvas(1200, 480);
     //setting myCanvas to DOM id="myContainer"
     myCanvas.parent("myContainer");
     background(100);
@@ -95,10 +100,30 @@ function setup() {
     gridXSize = width / resolution;
     gridYSize = height / resolution;
 
+    //Creating Slider
+    numSlider = createSlider(1, 450, 150, 0);
+    numSlider.position(width / 2 - 40, height + 50);
+    numSlider.style("width", "150px");
+
+    //Drawing initial grid
     createGrid();
 }
 
 function draw() {
+    //Set cycleSpeed to slider value
+    cycleSpeed = floor(numSlider.value());
+
+    //Change cycle speed to cycle count after startAnt() has started
+    if(!antStarted){
+        document.getElementById("cell1").innerHTML = "Cycle Speed";
+        if(cycleSpeed>10){
+            document.getElementById("cell2").innerHTML = cycleSpeed;
+        }else{
+            document.getElementById("cell2").innerHTML = "Gone to Plaid";
+        }    
+    }else{
+        document.getElementById("cell1").innerHTML = "Cycle Count";
+    }
 }
 
 //Creating two-dimensional array
@@ -149,8 +174,7 @@ function mousePressed() {
         //If the user has placed the ant
         if(!antPlacedFlag){
             /*converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
-            square that was clicked on. This gives a "snapping" effect for
-            grid selection*/
+            square that was clicked on. This gives a "snapping" effect for grid selection*/
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
             //Call Ant constructor with pixel x and y using mouseClickX and mouseClickY
@@ -166,10 +190,13 @@ function mousePressed() {
     }
 }
 
-function myFunction(){
+function startAnt(){
     //Timer code, uncomment for testing
     //var start= new Date().getTime();
-    
+
+    //flag for when to change cycle speed to cycle count
+    antStarted=true;
+
     if(antPlacedFlag){
             //Ant logic
 
@@ -274,7 +301,7 @@ function myFunction(){
 
             /*Calling the function again with a small time delay, this or a for loop with a limit is 
             needed so there is no runaway calculations*/
-            setTimeout(myFunction, 200);   
+            setTimeout(startAnt, cycleSpeed);   
     }          
 }
 
