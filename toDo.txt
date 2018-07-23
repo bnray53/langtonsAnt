@@ -12,4 +12,8 @@ Have display for error message that are currently being logged to console
 
 Allow user control over speed of iterations
 
+Have program stop when border has been reached
+
 Add ability to place multiple ants
+
+Optimize ant logic for speed

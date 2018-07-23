@@ -1,34 +1,50 @@
+//resolution is the side length of the grid squares, any grid variables are responsive to resolution 
 var resolution = 8;
+
+//declaring variables
 var gridArray;
-var numOfCycles = 0;
 var gridXSize;
 var gridYSize;
-var antPlacedFlag=false;
 var ant;
 
+//keeping track of number of movements made by ant
+var numOfCycles = 0;
+
+//flag for whether or not the ant has been placed on the grid
+var antPlacedFlag=false;
+
+/*Class for objects residing in the 2-dimensional array, only atrribute they have is .ind which acts as 
+an on/off or 1/0 indicator of the grid's state*/
 class GridContent {
     constructor(ind) {
         this.ind = ind;
     }
 }
 
+/*Class for ant object, has only three attributes x and y location based in pixels and one of four direction
+based on 0 degrees as north*/
+
+//Default direction is north
 class Ant{
     constructor(x,y){
         this.x=x;
         this.y=y;
         this.direction=0;
     }
-    //getGridY
+    //returns x coordinate in terms of the grid array indexes rather than pixels
     getGridX(){
         var gridX=this.x/resolution;
         return gridX;
     }
-    //getGridX
+    //returns y coordinate in terms of the grid array indexes rather than pixels
     getGridY(){
         var gridY=this.y/resolution;
         return gridY;
     }
-    
+    /*Below are the drawSquare methods, they draw a red filled rectangle thats of side length 
+    resolution, and an appropriately directed arrow based on resolution as well, also sets the 
+    direction of the ant object*/
+
     //draw square with north arrow
     drawSquareNorth(x,y){
         fill("red");
@@ -69,10 +85,13 @@ class Ant{
 
 
 function setup() {
-    // put setup code here
+    /* canvas dimensions should be able to be divided evenly by resolution if you want grid squares that fill
+    the canvas equally*/
     var myCanvas = createCanvas(1200, 450);
+    //setting myCanvas to DOM id="myContainer"
     myCanvas.parent("myContainer");
     background(100);
+    //Gives variables in terms of array indexes rather than pixels
     gridXSize = width / resolution;
     gridYSize = height / resolution;
 
@@ -82,6 +101,7 @@ function setup() {
 function draw() {
 }
 
+//Creating two-dimensional array
 function createGrid() {
     gridArray = [];
     for (i = 0; i < gridXSize; i++) {
@@ -92,6 +112,8 @@ function createGrid() {
     }
 }
 
+/*Creating white grid squares with respect to pixels and creating our "state" object 
+in each cell that is initially set to 1 for white.*/
 function fillGrid(x, y) {
     var fx=x;
     var fy=y;
@@ -100,7 +122,10 @@ function fillGrid(x, y) {
     rect((fx * resolution), (fy * resolution), resolution, resolution);
     indicator = 1;
     gridArray[fx][fy] = new GridContent(indicator);
-    //below gives black and white squares, keep for future reference
+
+    /*below gives black and white squares, keep for future reference, or
+    if ever want to start langton's ant on a non white grid*/
+
     /*var rand = floor(random(0, 2));
     if (rand == 1) {
         fill("black");
@@ -113,6 +138,7 @@ function fillGrid(x, y) {
         indicator = 1;
         gridArray[fx][fy] = new GridContent(indicator);
     }*/
+
     return;
 }
 
@@ -120,14 +146,17 @@ function fillGrid(x, y) {
 function mousePressed() {
     //If the user is inside canvas  
     if (mouseX < width && mouseY < height) {
+        //If the user has placed the ant
         if(!antPlacedFlag){
-            console.log("Inside canvas area");
+            /*converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
+            square that was clicked on. This gives a "snapping" effect for
+            grid selection*/
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
-            //Call constructor with pixel x and y using mouseClickX and mouseClickY
-            //and then when needed get the grid coordinates from Ant class functions
-            //default square facing north
+            //Call Ant constructor with pixel x and y using mouseClickX and mouseClickY
             ant=new Ant(mouseClickX, mouseClickY);
+            /*Create default square facing north and set antPlaced flag to true so
+            that this section is only run once*/            
             ant.drawSquareNorth(ant.x, ant.y);
             antPlacedFlag=true;
         }    
@@ -139,7 +168,15 @@ function mousePressed() {
 
 function myFunction(){
     if(antPlacedFlag){
-            //ant logic
+            //Ant logic
+
+            /*Each one of the following statements are very similar. First the ant's current direction is checked, 
+            then the state of the current grid is checked, based on the state of the grid the ant will then turn 
+            right for 1 and left for 0 (right or left is subjective to the ants current direction)
+            the ant will the proceed in that direction for one unit square(responsive to resolution).
+            During this operation the ant also switches the color of the grid he started on and 
+            calls for the grid to be redrawn so that the grid color changes */
+
             if(ant.direction==0){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
                     gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
@@ -192,14 +229,19 @@ function myFunction(){
                     ant.drawSquareSouth(ant.x,ant.y); 
                 }
             }else{
+                //If error in ant logic section
                 console.log("Error in ant brain");
             }
+            //Updating the displayed number of cycles
             numOfCycles++;
             document.getElementById("cell2").innerHTML=numOfCycles;
+            /*Calling the function again with a small time delay, this or a for loop with a limit is 
+            needed so there is no runaway calculations*/
             setTimeout(myFunction, 20);   
     }          
 }
 
+//This function redraws the current grid with respects to each grid objects state
 function refillGrid(){
     for (i = 0; i < gridXSize; i++) {
         for (j = 0; j < gridYSize; j++) {
