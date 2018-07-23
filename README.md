@@ -8,7 +8,7 @@
 ### Example
 - Here&apos;s an example of Langton&apos;s Highway plotted using Langton&apos;s Ant
 
-![picture of Langton's Ant](https://github.com/bnray53/chaosGame/blob/master/2018-07-22.png)
+![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/master/2018-07-22.png)
 
 ### Live Demo
 [Langton's Ant](http://www.biketq.com/langtonsAnt.html "Langton's Ant")
