@@ -167,9 +167,13 @@ function mousePressed() {
 }
 
 function myFunction(){
+    //Timer code, uncomment for testing
+    //var start= new Date().getTime();
+    
     if(antPlacedFlag){
             //Ant logic
 
+            //V1.1
             /*Each one of the following statements are very similar. First the ant's current direction is checked, 
             then the state of the current grid is checked, based on the state of the grid the ant will then turn 
             right for 1 and left for 0 (right or left is subjective to the ants current direction)
@@ -177,15 +181,30 @@ function myFunction(){
             During this operation the ant also switches the color of the grid he started on and 
             calls for the grid to be redrawn so that the grid color changes */
 
+            /*V1.2-optimization, to revert back to V1.1: uncomment refillGrid();, comment out
+            the fill() and rect() in all the following statements.
+            Results: Averaged over 8 cycles
+                V1.1 With seperate refillGrid(): 216.125ms per cycle
+                V1.2 Without seperate refillGriad(): .25ms per cycle
+                Percent Difference: 199.5378%
+                Percent Decrease: 86,350%
+            
+            Changes made: Instead of redrawing entire grid, just redraw the single changed grid cell.*/
+
+
             if(ant.direction==0){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
                     gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
-                    refillGrid();
+                    //refillGrid();
+                    fill("black");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.x=ant.x+resolution;
                     ant.drawSquareEast(ant.x,ant.y);
                 }else{
                     gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    refillGrid();
+                    //refillGrid();
+                    fill("white");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.x=ant.x-resolution;
                     ant.drawSquareWest(ant.x,ant.y);
                 }
@@ -193,12 +212,16 @@ function myFunction(){
             else if(ant.direction==90){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    refillGrid();
+                    //refillGrid();
+                    fill("black");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.y=ant.y+resolution;
                     ant.drawSquareSouth(ant.x,ant.y);
                 }else{
                     gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    refillGrid();
+                    //refillGrid();
+                    fill("white");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.y=ant.y-resolution;
                     ant.drawSquareNorth(ant.x,ant.y);
                 }
@@ -206,12 +229,16 @@ function myFunction(){
             else if(ant.direction==180){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    refillGrid();
+                    //refillGrid();
+                    fill("black");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.x=ant.x-resolution;
                     ant.drawSquareWest(ant.x,ant.y);
                 }else{
                     gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    refillGrid();
+                   // refillGrid();
+                    fill("white");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.x=ant.x+resolution;
                     ant.drawSquareEast(ant.x,ant.y);
                 }
@@ -219,12 +246,16 @@ function myFunction(){
             else if(ant.direction==270){
                 if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
                     gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    refillGrid();
+                    //refillGrid();
+                    fill("black");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.y=ant.y-resolution;
                     ant.drawSquareNorth(ant.x,ant.y);
                 }else{
                     gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    refillGrid();
+                    //refillGrid();
+                    fill("white");
+                    rect(ant.x, ant.y, resolution, resolution);
                     ant.y=ant.y+resolution;
                     ant.drawSquareSouth(ant.x,ant.y); 
                 }
@@ -235,14 +266,22 @@ function myFunction(){
             //Updating the displayed number of cycles
             numOfCycles++;
             document.getElementById("cell2").innerHTML=numOfCycles;
+
+            //Timer code, uncomment for testing
+			/*var end= new Date().getTime();
+            var seconds= end- start;
+            console.log("Milli-seconds Ellapsed:" + seconds);*/
+
             /*Calling the function again with a small time delay, this or a for loop with a limit is 
             needed so there is no runaway calculations*/
-            setTimeout(myFunction, 20);   
+            setTimeout(myFunction, 200);   
     }          
 }
 
+//refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.
+
 //This function redraws the current grid with respects to each grid objects state
-function refillGrid(){
+/*function refillGrid(){
     for (i = 0; i < gridXSize; i++) {
         for (j = 0; j < gridYSize; j++) {
             if (gridArray[i][j].ind == 1) {
@@ -254,4 +293,4 @@ function refillGrid(){
             }
         }
     }    
-}
+}*/
