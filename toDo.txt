@@ -10,7 +10,7 @@ Add aditional pages for Mandlebrot Set, Cantor Set, Koch Lines, and Barnselys Fe
 
 Have display for error message that are currently being logged to console 
 
-Allow user control over speed of iterations
+DONE-Allow user control over speed of iterations
 
 Have program stop when border has been reached
 
