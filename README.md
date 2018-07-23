@@ -17,4 +17,5 @@
 - Place your starting point anywhere on the canvas.
 - Select cycle iteration speed with slider.
 - Hit the start button.
+- Adjust cycle iteration speed at any time during the simulation.
 - To reset the simulation hit the reset button.
