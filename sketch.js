@@ -14,7 +14,7 @@ var numOfCycles = 0;
 //flag for whether or not the ant has been placed on the grid
 var antPlacedFlag=false;
 
-//Flag for when to change cycle speed to cycle count
+//flag for when to change cycle speed to cycle count
 var antStarted = false;
 
 //flag for when program has gone out of bounds
