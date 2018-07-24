@@ -17,6 +17,9 @@ var antPlacedFlag=false;
 //Flag for when to change cycle speed to cycle count
 var antStarted = false;
 
+//flag for when program has gone out of bounds
+var programComplete=false;
+
 
 /*Class for objects residing in the 2-dimensional array, only atrribute they have is .ind which acts as 
 an on/off or 1/0 indicator of the grid's state*/
@@ -113,16 +116,19 @@ function draw() {
     //Set cycleSpeed to slider value
     cycleSpeed = floor(numSlider.value());
 
-    //Change cycle speed to cycle count after startAnt() has started
-    if(!antStarted){
-        document.getElementById("cell1").innerHTML = "Cycle Speed";
-        if(cycleSpeed>10){
-            document.getElementById("cell2").innerHTML = cycleSpeed;
+    //If program is in bounds
+    if(!programComplete){
+        //Change cycle speed to cycle count after startAnt() has started
+        if(!antStarted){
+            document.getElementById("cell1").innerHTML = "Cycle Speed";
+            if(cycleSpeed>10){
+                document.getElementById("cell2").innerHTML = cycleSpeed;
+            }else{
+                document.getElementById("cell2").innerHTML = "Gone to Plaid";
+            }    
         }else{
-            document.getElementById("cell2").innerHTML = "Gone to Plaid";
-        }    
-    }else{
-        document.getElementById("cell1").innerHTML = "Cycle Count";
+            document.getElementById("cell1").innerHTML = "Cycle Count";
+        }
     }
 }
 
@@ -194,115 +200,124 @@ function startAnt(){
     //Timer code, uncomment for testing
     //var start= new Date().getTime();
 
-    //flag for when to change cycle speed to cycle count
-    antStarted=true;
+    //try block used to catch when ant goes out of bounds
+    try {
+        //flag for when to change cycle speed to cycle count
+        antStarted=true;
 
-    if(antPlacedFlag){
-            //Ant logic
+        if(antPlacedFlag){
+                //Ant logic
 
-            //V1.1
-            /*Each one of the following statements are very similar. First the ant's current direction is checked, 
-            then the state of the current grid is checked, based on the state of the grid the ant will then turn 
-            right for 1 and left for 0 (right or left is subjective to the ants current direction)
-            the ant will the proceed in that direction for one unit square(responsive to resolution).
-            During this operation the ant also switches the color of the grid he started on and 
-            calls for the grid to be redrawn so that the grid color changes */
+                //V1.1
+                /*Each one of the following statements are very similar. First the ant's current direction is checked, 
+                then the state of the current grid is checked, based on the state of the grid the ant will then turn 
+                right for 1 and left for 0 (right or left is subjective to the ants current direction)
+                the ant will the proceed in that direction for one unit square(responsive to resolution).
+                During this operation the ant also switches the color of the grid he started on and 
+                calls for the grid to be redrawn so that the grid color changes */
 
-            /*V1.2-optimization, to revert back to V1.1: uncomment refillGrid();, comment out
-            the fill() and rect() in all the following statements.
-            Results: Averaged over 8 cycles
-                V1.1 With seperate refillGrid(): 216.125ms per cycle
-                V1.2 Without seperate refillGriad(): .25ms per cycle
-                Percent Difference: 199.5378%
-                Percent Decrease: 86,350%
-            
-            Changes made: Instead of redrawing entire grid, just redraw the single changed grid cell.*/
+                /*V1.2-optimization, to revert back to V1.1: uncomment refillGrid();, comment out
+                the fill() and rect() in all the following statements.
+                Results: Averaged over 8 cycles
+                    V1.1 With seperate refillGrid(): 216.125ms per cycle
+                    V1.2 Without seperate refillGriad(): .25ms per cycle
+                    Percent Difference: 199.5378%
+                    Percent Decrease: 86,350%
+                
+                Changes made: Instead of redrawing entire grid, just redraw the single changed grid cell.*/
 
 
-            if(ant.direction==0){
-                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
-                    //refillGrid();
-                    fill("black");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.x=ant.x+resolution;
-                    ant.drawSquareEast(ant.x,ant.y);
-                }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    //refillGrid();
-                    fill("white");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.x=ant.x-resolution;
-                    ant.drawSquareWest(ant.x,ant.y);
+                if(ant.direction==0){
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
+                        //refillGrid();
+                        fill("black");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.x=ant.x+resolution;
+                        ant.drawSquareEast(ant.x,ant.y);
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        //refillGrid();
+                        fill("white");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.x=ant.x-resolution;
+                        ant.drawSquareWest(ant.x,ant.y);
+                    }
                 }
-            }
-            else if(ant.direction==90){
-                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    //refillGrid();
-                    fill("black");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.y=ant.y+resolution;
-                    ant.drawSquareSouth(ant.x,ant.y);
-                }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    //refillGrid();
-                    fill("white");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.y=ant.y-resolution;
-                    ant.drawSquareNorth(ant.x,ant.y);
+                else if(ant.direction==90){
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                        //refillGrid();
+                        fill("black");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.y=ant.y+resolution;
+                        ant.drawSquareSouth(ant.x,ant.y);
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        //refillGrid();
+                        fill("white");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.y=ant.y-resolution;
+                        ant.drawSquareNorth(ant.x,ant.y);
+                    }
                 }
-            }
-            else if(ant.direction==180){
-                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    //refillGrid();
-                    fill("black");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.x=ant.x-resolution;
-                    ant.drawSquareWest(ant.x,ant.y);
-                }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                   // refillGrid();
-                    fill("white");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.x=ant.x+resolution;
-                    ant.drawSquareEast(ant.x,ant.y);
+                else if(ant.direction==180){
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                        //refillGrid();
+                        fill("black");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.x=ant.x-resolution;
+                        ant.drawSquareWest(ant.x,ant.y);
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                    // refillGrid();
+                        fill("white");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.x=ant.x+resolution;
+                        ant.drawSquareEast(ant.x,ant.y);
+                    }
                 }
-            }
-            else if(ant.direction==270){
-                if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=0;
-                    //refillGrid();
-                    fill("black");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.y=ant.y-resolution;
-                    ant.drawSquareNorth(ant.x,ant.y);
+                else if(ant.direction==270){
+                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                        //refillGrid();
+                        fill("black");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.y=ant.y-resolution;
+                        ant.drawSquareNorth(ant.x,ant.y);
+                    }else{
+                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        //refillGrid();
+                        fill("white");
+                        rect(ant.x, ant.y, resolution, resolution);
+                        ant.y=ant.y+resolution;
+                        ant.drawSquareSouth(ant.x,ant.y); 
+                    }
                 }else{
-                    gridArray[ant.getGridX()][ant.getGridY()].ind=1;
-                    //refillGrid();
-                    fill("white");
-                    rect(ant.x, ant.y, resolution, resolution);
-                    ant.y=ant.y+resolution;
-                    ant.drawSquareSouth(ant.x,ant.y); 
+                    //If error in ant logic section
+                    console.log("Error in ant brain");
                 }
-            }else{
-                //If error in ant logic section
-                console.log("Error in ant brain");
-            }
-            //Updating the displayed number of cycles
-            numOfCycles++;
-            document.getElementById("cell2").innerHTML=numOfCycles;
+                //Updating the displayed number of cycles
+                numOfCycles++;
+                document.getElementById("cell2").innerHTML=numOfCycles;
 
-            //Timer code, uncomment for testing
-			/*var end= new Date().getTime();
-            var seconds= end- start;
-            console.log("Milli-seconds Ellapsed:" + seconds);*/
+                //Timer code, uncomment for testing
+                /*var end= new Date().getTime();
+                var seconds= end- start;
+                console.log("Milli-seconds Ellapsed:" + seconds);*/
 
-            /*Calling the function again with a small time delay, this or a for loop with a limit is 
-            needed so there is no runaway calculations*/
-            setTimeout(startAnt, cycleSpeed);   
-    }          
+                /*Calling the function again with a small time delay, this or a for loop with a limit is 
+                needed so there is no runaway calculations*/
+                setTimeout(startAnt, cycleSpeed);  
+                console.log("Still going"); 
+        }
+    }catch(err){
+        //flag used to stop the draw function override on cell1 and cell2
+        programComplete=true;
+        document.getElementById("cell1").innerHTML="Program Complete";
+        document.getElementById("cell2").innerHTML="&nbsp;";
+    }      
 }
 
 //refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.
