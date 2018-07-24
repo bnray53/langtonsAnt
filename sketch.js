@@ -310,7 +310,6 @@ function startAnt(){
                 /*Calling the function again with a small time delay, this or a for loop with a limit is 
                 needed so there is no runaway calculations*/
                 setTimeout(startAnt, cycleSpeed);  
-                console.log("Still going"); 
         }
     }catch(err){
         //flag used to stop the draw function override on cell1 and cell2
