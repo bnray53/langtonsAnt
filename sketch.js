@@ -11,7 +11,7 @@ var cycleSpeed;
 //keeping track of number of movements made by ant
 var numOfCycles = 0;
 
-//flag for whether or not the ant has been placed on the grid
+//flag if the ant has been placed on the grid
 var antPlacedFlag=false;
 
 //flag for when to change cycle speed to cycle count
@@ -216,7 +216,7 @@ function startAnt(){
                 During this operation the ant also switches the color of the grid he started on and 
                 calls for the grid to be redrawn so that the grid color changes */
 
-                /*V1.2-optimization, to revert back to V1.1: uncomment refillGrid();, comment out
+                /*V1.2-optimization, to revert back to V1.1: uncomment refillGrid();, and comment out
                 the fill() and rect() in all the following statements.
                 Results: Averaged over 8 cycles
                     V1.1 With seperate refillGrid(): 216.125ms per cycle
