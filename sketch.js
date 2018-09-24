@@ -11,7 +11,7 @@ var cycleSpeed;
 //keeping track of number of movements made by ant
 var numOfCycles = 0;
 
-//flag if the ant has been placed on the grid
+//flag for if the ant has been placed on the grid
 var antPlacedFlag=false;
 
 //flag for when to change cycle speed to cycle count
