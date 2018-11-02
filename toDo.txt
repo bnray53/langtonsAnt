@@ -1,19 +1,60 @@
 Things To Do:
 
-Configure so canvas is set automatically to device width
+DONE-Configure so canvas is set automatically to device width
+FIXED--Elements are currently responsive, but need to keep the number of block desplayed divisible by resolution
+FIXED--Adjustment bars are currently not being removed upon resizing, need to reload page to clear.
+FIXED--Need to be able to reset page, especially if ant has been placed already
 
 Add writeup about the math behind the process
 
 Write some kind of horizontal control panel for adjusting and displpaying various parameters to replace the single paragraph cells
+--Control Panel Added, need to configure the program to accept the new inputs.
 
-Add aditional pages for Mandlebrot Set, Cantor Set, Koch Lines, and Barnselys Fern
+???Add aditional pages for Mandlebrot Set, Cantor Set, Koch Lines, and Barnselys Fern???
 
-Have display for error message that are currently being logged to console 
+???Have display for error message that are currently being logged to console??? 
 
 DONE-Allow user control over speed of iterations
 
 DONE-Have program stop when border has been reached
 
-Add ability to place multiple ants
+DONE-Add ability to place multiple ants
 
 DONE-Optimize ant logic for speed. ?Instead of redrawing whole grid just redraw the flipped square?
+
+Add ability to select and rotate ants
+
+DONE-Add ability to start with random colored grid
+
+Refactor and clean up program
+--???Have classes, setup/draw, and startAnt in different folders???
+
+???Remove click inside area warning???
+
+???Add ability for ant to not go out of bounds but loop back to opposite edge, or bounce off of edge???
+
+???let user control scale???
+
+???hover over coordinates for replication???
+
+DONE-save number of cycles
+
+???save starting coordinates for replication???
+
+DONE-Different colors for different ants
+
+DONE-disable start button when startAnt is called to prevent skipping error
+
+DONE-verify antPlaced flag is functioning
+FIXED--error is occuring because ant is being placed outside of canvas when clicking start, this allows a user to prematuraly 
+ start the StartAnt function
+FIXED--Need to fix by adjusting the click event checking for the padding around the canvas.
+//Fixed by changing diminsion check (mouseX < width && mouseY < height) to ((mouseX>0&&(mouseX<width))&&(mouseY>0&&(mouseY<height)))
+
+bug user can set ants to two, place ants, reset ants to three click start, then place third ant.
+--???Fix or Feature???
+
+DONE-only change to cycleCount if ant has been placed
+//Moved antStartedFlag inside if statement, garunteeing ants have been placed before switching 
+
+Add "please place your ants" to cell5 when done with roate and select function implementation 

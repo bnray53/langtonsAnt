@@ -1,5 +1,8 @@
 //resolution is the side length of the grid squares, any grid variables are responsive to resolution 
-var resolution = 8;
+var resolution = 10;
+
+//what setting the swap button is on default is 0 "Random Grid" with solid grid displayed, 1 is "Solid Grid" with random grid displayed
+var swapButtonState=0;
 
 //declaring variables
 var gridArray;
@@ -7,6 +10,18 @@ var gridXSize;
 var gridYSize;
 var ant;
 var cycleSpeed;
+var numSlider;
+
+//CMAC Creating color array to be used in ant class
+var colorArray=["red","orange","yellow","lawngreen","dodgerblue","darkorchid"];
+
+//MAC creating ant array
+var antArray=[];
+//MAC
+var currentNumAnts=0;
+//MAC getNumAnts will be linked to user controled slider on the index page 
+//MAC linked succesfully 10/31 1147hrs
+var getNumAnts;
 
 //keeping track of number of movements made by ant
 var numOfCycles = 0;
@@ -52,10 +67,10 @@ class Ant{
     /*Below are the drawSquare methods, they draw a red filled rectangle thats of side length 
     resolution, and an appropriately directed arrow based on resolution as well, also sets the 
     direction of the ant object*/
-
+    //CMAC add color parameter instead of hard coding "red"
     //draw square with north arrow
-    drawSquareNorth(x,y){
-        fill("red");
+    drawSquareNorth(x,y,color){
+        fill(color);
         rect(x,y,resolution,resolution);
         line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.5), y+(resolution*.1));
         line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.1));
@@ -63,8 +78,8 @@ class Ant{
         this.direction=0;   
     }
     //draw square with south arrow
-    drawSquareSouth(x,y){
-        fill("red");
+    drawSquareSouth(x,y,color){
+        fill(color);
         rect(x,y,resolution,resolution);
         line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.5), y+(resolution*.1));
         line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.9));
@@ -72,8 +87,8 @@ class Ant{
         this.direction=180;   
     }
     //draw square with east arrow
-    drawSquareEast(x,y){
-        fill("red");
+    drawSquareEast(x,y,color){
+        fill(color);
         rect(x,y,resolution,resolution);
         line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.9), y+(resolution*.5));
         line(x+(resolution*.9), y+(resolution*.5), x+(resolution*.5), y+(resolution*.9));
@@ -81,8 +96,8 @@ class Ant{
         this.direction=90;    
     }
     //draw square with west arrow
-    drawSquareWest(x,y){
-        fill("red");
+    drawSquareWest(x,y,color){
+        fill(color);
         rect(x,y,resolution,resolution);
         line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.9), y+(resolution*.5));
         line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.1));
@@ -95,41 +110,98 @@ class Ant{
 function setup() {
     /* canvas dimensions should be able to be divided evenly by resolution if you want grid squares that fill
     the canvas equally*/
-    var myCanvas = createCanvas(1200, 480);
+    
+    //old version
+    //var myCanvas = createCanvas(window.innerWidth-50, window.innerHeight-125);
+    //New version, keeps the diminsions of the canvas divisible by the resolution, this gives an whoole number of grid squares
+    var myCanvas = createCanvas(((floor((window.innerWidth-50)/resolution))*resolution), ((floor((window.innerHeight-125)/resolution))*resolution));
     //setting myCanvas to DOM id="myContainer"
     myCanvas.parent("myContainer");
     background(100);
     //Gives variables in terms of array indexes rather than pixels
     gridXSize = width / resolution;
     gridYSize = height / resolution;
-
+    
     //Creating Slider
-    numSlider = createSlider(1, 450, 150, 0);
-    numSlider.position(width / 2 - 40, height + 50);
-    numSlider.style("width", "150px");
+   /* numSlider = createSlider(1, 450, 150, 0);
+    numSlider.position(width / 2-55, height + 50);
+    numSlider.style("width", "150px");*/
 
+    //Cycle speed slider
+    numSlider=document.getElementById("slider1");
+    //Ant count slider
+    numslider2=document.getElementById("slider2");
     //Drawing initial grid
     createGrid();
 }
 
 function draw() {
     //Set cycleSpeed to slider value
-    cycleSpeed = floor(numSlider.value());
+    cycleSpeed = floor(numSlider.value);
+    //MAC setting user inputted num of ants 
+    getNumAnts=numslider2.value;
+
+    //Display number of ants
+    document.getElementById("cell4").innerHTML=numslider2.value;
 
     //If program is in bounds
     if(!programComplete){
         //Change cycle speed to cycle count after startAnt() has started
         if(!antStarted){
-            document.getElementById("cell1").innerHTML = "Cycle Speed";
+            document.getElementById("cell1").innerHTML = "Time Between Cycles";
             if(cycleSpeed>10){
-                document.getElementById("cell2").innerHTML = cycleSpeed;
+                document.getElementById("cell2").innerHTML = cycleSpeed+"ms";
             }else{
                 document.getElementById("cell2").innerHTML = "Gone to Plaid";
             }    
         }else{
             document.getElementById("cell1").innerHTML = "Cycle Count";
+            //disable ant count slider
+            numslider2.disabled=true;
         }
     }
+}
+
+function windowResized(){
+    //only way found to consistantly reload page
+    window.location="index.html";
+}
+
+
+function swapGrid(){
+    if(swapButtonState==0){
+        document.getElementById("swapButton").innerHTML = "Solid Grid";
+        swapButtonState=1;
+        createGrid();
+        //MAC
+        /*if(antPlacedFlag){
+            ant.drawSquareNorth(ant.x, ant.y);
+        }*/
+        //MAC
+        //CMAC Change add color parameter
+        if(currentNumAnts>0){
+            for(i=0;i<=currentNumAnts-1;i++){
+                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+            }
+        }
+        return;
+    }if(swapButtonState==1){
+        document.getElementById("swapButton").innerHTML = "Random Grid";
+        swapButtonState=0;
+        createGrid();
+        //MAC
+        /*if(antPlacedFlag){
+            ant.drawSquareNorth(ant.x, ant.y);
+        }*/
+        //MAC
+        //CMAC Change add color parameter
+        if(currentNumAnts>0){
+            for(i=0;i<=currentNumAnts-1;i++){
+                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+            }
+        }
+        return;
+    } 
 }
 
 //Creating two-dimensional array
@@ -149,46 +221,62 @@ function fillGrid(x, y) {
     var fx=x;
     var fy=y;
     var indicator;
-    fill("white");
-    rect((fx * resolution), (fy * resolution), resolution, resolution);
-    indicator = 1;
-    gridArray[fx][fy] = new GridContent(indicator);
-
-    /*below gives black and white squares, keep for future reference, or
-    if ever want to start langton's ant on a non white grid*/
-
-    /*var rand = floor(random(0, 2));
-    if (rand == 1) {
-        fill("black");
-        rect((fx * resolution), (fy * resolution), resolution, resolution);
-        indicator = 0;
-        gridArray[fx][fy] = new GridContent(indicator);
-    } else {
+    if(swapButtonState==0){
         fill("white");
         rect((fx * resolution), (fy * resolution), resolution, resolution);
         indicator = 1;
         gridArray[fx][fy] = new GridContent(indicator);
-    }*/
-
+    }
+        /*below gives black and white squares, keep for future reference, or
+        if ever want to start langton's ant on a non white grid*/
+    else if(swapButtonState==1){
+        var rand = floor(random(0, 2));
+        if (rand == 1) {
+            fill("black");
+            rect((fx * resolution), (fy * resolution), resolution, resolution);
+            indicator = 0;
+            gridArray[fx][fy] = new GridContent(indicator);
+        } else {
+            fill("white");
+            rect((fx * resolution), (fy * resolution), resolution, resolution);
+            indicator = 1;
+            gridArray[fx][fy] = new GridContent(indicator);
+        }
+    }
     return;
 }
 
 //Based on mouse-press event
 function mousePressed() {
     //If the user is inside canvas  
-    if (mouseX < width && mouseY < height) {
+    //if (mouseX < width && mouseY < height) {
+    //MAC fixed dimension check
+    if((mouseX>0&&(mouseX<width))&&(mouseY>0&&(mouseY<height))){    
         //If the user has placed the ant
-        if(!antPlacedFlag){
+        //MACif(!antPlacedFlag){
+        //MAC
+        if(currentNumAnts<getNumAnts){    
             /*converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
             square that was clicked on. This gives a "snapping" effect for grid selection*/
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
             //Call Ant constructor with pixel x and y using mouseClickX and mouseClickY
-            ant=new Ant(mouseClickX, mouseClickY);
+            //MACant=new Ant(mouseClickX, mouseClickY);
+            //MAC push ant objects into array
+            antArray.push(new Ant(mouseClickX, mouseClickY));
             /*Create default square facing north and set antPlaced flag to true so
             that this section is only run once*/            
-            ant.drawSquareNorth(ant.x, ant.y);
-            antPlacedFlag=true;
+            //MACant.drawSquareNorth(ant.x, ant.y);
+            //MAC
+            //CMAC Change add color parameter
+            antArray[currentNumAnts].drawSquareNorth(antArray[currentNumAnts].x, antArray[currentNumAnts].y,colorArray[currentNumAnts]);
+            //MAC antPlacedFlag=true;
+            //MAC
+            currentNumAnts++;
+            //MAC
+            if(currentNumAnts==getNumAnts){
+                antPlacedFlag=true;
+            }
         }    
     }else {
         //If user is outside canvas  
@@ -199,15 +287,21 @@ function mousePressed() {
 function startAnt(){
     //Timer code, uncomment for testing
     //var start= new Date().getTime();
-
+    
     //try block used to catch when ant goes out of bounds
     try {
-        //flag for when to change cycle speed to cycle count
-        antStarted=true;
+        
+        
+        //console.log("currentNumAnts"+currentNumAnts);
+        //console.log("getNumAnts"+getNumAnts);
 
         if(antPlacedFlag){
+            //flag for when to change cycle speed to cycle count
+            antStarted=true;
                 //Ant logic
-
+                
+                //MAC disbale start button to prevent skipping error
+                document.getElementById("startButton").disabled=true;
                 //V1.1
                 /*Each one of the following statements are very similar. First the ant's current direction is checked, 
                 then the state of the current grid is checked, based on the state of the grid the ant will then turn 
@@ -226,78 +320,83 @@ function startAnt(){
                 
                 Changes made: Instead of redrawing entire grid, just redraw the single changed grid cell.*/
 
+                //Interesting results with (resolution*2)
 
-                if(ant.direction==0){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){                                     
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;                    
+                //MAC changed all ant. to antArray[i]. and added for loop
+                //CMAC Change added color parameter
+                for(i=0;i<currentNumAnts;i++){
+                if(antArray[i].direction==0){
+                    if(gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind==1){                                     
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=0;                    
                         //refillGrid();
                         fill("black");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.x=ant.x+resolution;
-                        ant.drawSquareEast(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].x=antArray[i].x+resolution;
+                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i]);
                     }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.x=ant.x-resolution;
-                        ant.drawSquareWest(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].x=antArray[i].x-resolution;
+                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i]);
                     }
                 }
-                else if(ant.direction==90){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                else if(antArray[i].direction==90){
+                    if(gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind==1){
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=0;
                         //refillGrid();
                         fill("black");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.y=ant.y+resolution;
-                        ant.drawSquareSouth(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].y=antArray[i].y+resolution;
+                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i]);
                     }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.y=ant.y-resolution;
-                        ant.drawSquareNorth(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].y=antArray[i].y-resolution;
+                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
                     }
                 }
-                else if(ant.direction==180){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                else if(antArray[i].direction==180){
+                    if(gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind==1){
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=0;
                         //refillGrid();
                         fill("black");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.x=ant.x-resolution;
-                        ant.drawSquareWest(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].x=antArray[i].x-resolution;
+                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i]);
                     }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                     // refillGrid();
                         fill("white");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.x=ant.x+resolution;
-                        ant.drawSquareEast(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].x=antArray[i].x+resolution;
+                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i]);
                     }
                 }
-                else if(ant.direction==270){
-                    if(gridArray[ant.getGridX()][ant.getGridY()].ind==1){
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=0;
+                else if(antArray[i].direction==270){
+                    if(gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind==1){
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=0;
                         //refillGrid();
                         fill("black");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.y=ant.y-resolution;
-                        ant.drawSquareNorth(ant.x,ant.y);
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].y=antArray[i].y-resolution;
+                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
                     }else{
-                        gridArray[ant.getGridX()][ant.getGridY()].ind=1;
+                        gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
-                        rect(ant.x, ant.y, resolution, resolution);
-                        ant.y=ant.y+resolution;
-                        ant.drawSquareSouth(ant.x,ant.y); 
+                        rect(antArray[i].x, antArray[i].y, resolution, resolution);
+                        antArray[i].y=antArray[i].y+resolution;
+                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i]); 
                     }
                 }else{
                     //If error in ant logic section
                     console.log("Error in ant brain");
                 }
+            }
                 //Updating the displayed number of cycles
                 numOfCycles++;
                 document.getElementById("cell2").innerHTML=numOfCycles;
@@ -314,9 +413,41 @@ function startAnt(){
     }catch(err){
         //flag used to stop the draw function override on cell1 and cell2
         programComplete=true;
+        console.log(err);
         document.getElementById("cell1").innerHTML="Program Complete";
-        document.getElementById("cell2").innerHTML="&nbsp;";
+        document.getElementById("cell2").innerHTML="Total Cycles: "+numOfCycles;
     }      
+}
+
+//
+//Below is the new code added for the rotate and select function, variables have been kept isolated for troubleshooting
+//
+
+//only run if ants have been placed
+//disable buttons once startAnt has been called
+//need a global element to keep track of which ant has been selected, default to zero
+var selectedAnt=0; 
+function selectAnt(){
+    if(antPlacedFlag){
+        console.log("selectAntFunction");
+        if(selectedAnt>currentNumAnts-1){
+            selectedAnt=0;
+        }
+
+        //cycle through ants based on current ants
+        //need a try catch block in case user has not put an ant and tries to click button
+        //display ant in cell5 of the index page 
+        document.getElementById("cell5").innerHTML=selectedAnt;
+        selectedAnt++;
+    }
+}
+
+function rotateAnt(){
+    console.log("rotateAntFunction");
+    //cycle through the didfferent compass directions
+    //rotate the selected ant
+    //update cell5 with new direction
+    //update the selected ant object with the new direction
 }
 
 //refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.
