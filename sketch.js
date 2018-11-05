@@ -4,6 +4,8 @@ var resolution = 10;
 //what setting the swap button is on default is 0 "Random Grid" with solid grid displayed, 1 is "Solid Grid" with random grid displayed
 var swapButtonState=0;
 
+var pauseButtonState=0;
+
 //declaring variables
 var gridArray;
 var gridXSize;
@@ -14,7 +16,8 @@ var numSlider;
 
 //CMAC Creating color array to be used in ant class
 var colorArray=["red","orange","yellow","lawngreen","dodgerblue","darkorchid"];
-
+//Added with rotate and select function
+var colorArrayUser=["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 //MAC creating ant array
 var antArray=[];
 //MAC
@@ -69,39 +72,40 @@ class Ant{
     direction of the ant object*/
     //CMAC add color parameter instead of hard coding "red"
     //draw square with north arrow
-    drawSquareNorth(x,y,color){
+    //SAR adding side parameter instaead of referring to side
+    drawSquareNorth(x,y,color,side){
         fill(color);
-        rect(x,y,resolution,resolution);
-        line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.5), y+(resolution*.1));
-        line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.1));
-        line(x+(resolution*.5), y+(resolution*.1), x+(resolution*.9), y+(resolution*.5)); 
+        rect(x,y,side,side);
+        line(x+(side*.5), y+(side*.9), x+(side*.5), y+(side*.1));
+        line(x+(side*.1), y+(side*.5), x+(side*.5), y+(side*.1));
+        line(x+(side*.5), y+(side*.1), x+(side*.9), y+(side*.5)); 
         this.direction=0;   
     }
     //draw square with south arrow
-    drawSquareSouth(x,y,color){
+    drawSquareSouth(x,y,color,side){
         fill(color);
-        rect(x,y,resolution,resolution);
-        line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.5), y+(resolution*.1));
-        line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.9));
-        line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.9), y+(resolution*.5)); 
+        rect(x,y,side,side);
+        line(x+(side*.5), y+(side*.9), x+(side*.5), y+(side*.1));
+        line(x+(side*.1), y+(side*.5), x+(side*.5), y+(side*.9));
+        line(x+(side*.5), y+(side*.9), x+(side*.9), y+(side*.5)); 
         this.direction=180;   
     }
     //draw square with east arrow
-    drawSquareEast(x,y,color){
+    drawSquareEast(x,y,color,side){
         fill(color);
-        rect(x,y,resolution,resolution);
-        line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.9), y+(resolution*.5));
-        line(x+(resolution*.9), y+(resolution*.5), x+(resolution*.5), y+(resolution*.9));
-        line(x+(resolution*.5), y+(resolution*.1), x+(resolution*.9), y+(resolution*.5));
+        rect(x,y,side,side);
+        line(x+(side*.1), y+(side*.5), x+(side*.9), y+(side*.5));
+        line(x+(side*.9), y+(side*.5), x+(side*.5), y+(side*.9));
+        line(x+(side*.5), y+(side*.1), x+(side*.9), y+(side*.5));
         this.direction=90;    
     }
     //draw square with west arrow
-    drawSquareWest(x,y,color){
+    drawSquareWest(x,y,color,side){
         fill(color);
-        rect(x,y,resolution,resolution);
-        line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.9), y+(resolution*.5));
-        line(x+(resolution*.1), y+(resolution*.5), x+(resolution*.5), y+(resolution*.1));
-        line(x+(resolution*.5), y+(resolution*.9), x+(resolution*.1), y+(resolution*.5)); 
+        rect(x,y,side,side);
+        line(x+(side*.1), y+(side*.5), x+(side*.9), y+(side*.5));
+        line(x+(side*.1), y+(side*.5), x+(side*.5), y+(side*.1));
+        line(x+(side*.5), y+(side*.9), x+(side*.1), y+(side*.5)); 
         this.direction=270;   
     }
 }
@@ -181,7 +185,7 @@ function swapGrid(){
         //CMAC Change add color parameter
         if(currentNumAnts>0){
             for(i=0;i<=currentNumAnts-1;i++){
-                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
             }
         }
         return;
@@ -197,7 +201,7 @@ function swapGrid(){
         //CMAC Change add color parameter
         if(currentNumAnts>0){
             for(i=0;i<=currentNumAnts-1;i++){
-                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+                antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
             }
         }
         return;
@@ -269,18 +273,20 @@ function mousePressed() {
             //MACant.drawSquareNorth(ant.x, ant.y);
             //MAC
             //CMAC Change add color parameter
-            antArray[currentNumAnts].drawSquareNorth(antArray[currentNumAnts].x, antArray[currentNumAnts].y,colorArray[currentNumAnts]);
+            antArray[currentNumAnts].drawSquareNorth(antArray[currentNumAnts].x, antArray[currentNumAnts].y,colorArray[currentNumAnts],resolution);
             //MAC antPlacedFlag=true;
             //MAC
             currentNumAnts++;
             //MAC
             if(currentNumAnts==getNumAnts){
                 antPlacedFlag=true;
+                //Added when with rotate ant functions
+                document.getElementById("cell5").innerHTML="Red Ant Selected. &nbsp; Direction: 0"
             }
         }    
     }else {
         //If user is outside canvas  
-        console.log("Please click inside the canvas area");
+        console.log("Please click inside the canvas area to place ants");
     }
 }
 
@@ -302,6 +308,12 @@ function startAnt(){
                 
                 //MAC disbale start button to prevent skipping error
                 document.getElementById("startButton").disabled=true;
+                document.getElementById("selectAntButton").disabled=true;
+                document.getElementById("rotateAntButton").disabled=true;
+                document.getElementById("swapButton").disabled=true;
+                //Added when with rotate ant functions
+                document.getElementById("cell5").innerHTML=" ";
+                
                 //V1.1
                 /*Each one of the following statements are very similar. First the ant's current direction is checked, 
                 then the state of the current grid is checked, based on the state of the grid the ant will then turn 
@@ -332,14 +344,14 @@ function startAnt(){
                         fill("black");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].x=antArray[i].x+resolution;
-                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }else{
                         gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].x=antArray[i].x-resolution;
-                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }
                 }
                 else if(antArray[i].direction==90){
@@ -349,14 +361,14 @@ function startAnt(){
                         fill("black");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].y=antArray[i].y+resolution;
-                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }else{
                         gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].y=antArray[i].y-resolution;
-                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }
                 }
                 else if(antArray[i].direction==180){
@@ -366,14 +378,14 @@ function startAnt(){
                         fill("black");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].x=antArray[i].x-resolution;
-                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareWest(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }else{
                         gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                     // refillGrid();
                         fill("white");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].x=antArray[i].x+resolution;
-                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareEast(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }
                 }
                 else if(antArray[i].direction==270){
@@ -383,14 +395,14 @@ function startAnt(){
                         fill("black");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].y=antArray[i].y-resolution;
-                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i]);
+                        antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
                     }else{
                         gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=1;
                         //refillGrid();
                         fill("white");
                         rect(antArray[i].x, antArray[i].y, resolution, resolution);
                         antArray[i].y=antArray[i].y+resolution;
-                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i]); 
+                        antArray[i].drawSquareSouth(antArray[i].x,antArray[i].y,colorArray[i],resolution); 
                     }
                 }else{
                     //If error in ant logic section
@@ -408,12 +420,16 @@ function startAnt(){
 
                 /*Calling the function again with a small time delay, this or a for loop with a limit is 
                 needed so there is no runaway calculations*/
-                setTimeout(startAnt, cycleSpeed);  
+                if(pauseButtonState==1){
+                    return;
+                }else{
+                    setTimeout(startAnt, cycleSpeed);  
+                }    
         }
     }catch(err){
         //flag used to stop the draw function override on cell1 and cell2
         programComplete=true;
-        console.log(err);
+        //console.log(err);
         document.getElementById("cell1").innerHTML="Program Complete";
         document.getElementById("cell2").innerHTML="Total Cycles: "+numOfCycles;
     }      
@@ -427,27 +443,78 @@ function startAnt(){
 //disable buttons once startAnt has been called
 //need a global element to keep track of which ant has been selected, default to zero
 var selectedAnt=0; 
+//re adjusting the size of the ant object for better display in cell5, this is entirely seperate from regular resolution and may be adjusted as needed here
+var cellResolution=10;
 function selectAnt(){
     if(antPlacedFlag){
-        console.log("selectAntFunction");
-        if(selectedAnt>currentNumAnts-1){
+        
+        selectedAnt++;
+        if(selectedAnt==currentNumAnts){
             selectedAnt=0;
         }
+        
+        document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+        
+        //Below draws the ant object into cell5
+        //Just 1st attempt, may need to adjust coordinates we are sending to match those of cell5
+        //1st attempt results in undefined
+        //May just need to save the squares as icons and display the icons???
+        /*if(antArray[selectedAnt].direction==0){
+            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareNorth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);
+        }else if(antArray[selectedAnt].direction==90){
+            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareEast(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);            
+        }else if(antArray[selectedAnt].direction==180){
+            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareSouth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);         
+        }else if(antArray[selectedAnt].direction==270){
+           // document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareWest(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);
+        }else{
+            document.getElementById("cell5").innerHTML="Unable to Draw Selected Ant";
+        }*/
 
         //cycle through ants based on current ants
-        //need a try catch block in case user has not put an ant and tries to click button
+        
         //display ant in cell5 of the index page 
-        document.getElementById("cell5").innerHTML=selectedAnt;
-        selectedAnt++;
+        //document.getElementById("cell5").innerHTML=selectedAnt;
+        
     }
 }
 
 function rotateAnt(){
-    console.log("rotateAntFunction");
+    //"Red Ant Selected. &nbsp; Direction: 0"
+    if(antPlacedFlag){
+        if(antArray[selectedAnt].direction==0){
+            antArray[selectedAnt].drawSquareEast(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
+            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+        }else if(antArray[selectedAnt].direction==90){
+            antArray[selectedAnt].drawSquareSouth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);            
+            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+        }else if(antArray[selectedAnt].direction==180){
+            antArray[selectedAnt].drawSquareWest(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);         
+            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+        }else if(antArray[selectedAnt].direction==270){
+            antArray[selectedAnt].drawSquareNorth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
+            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+        }else{
+            document.getElementById("cell5").innerHTML="Unable to Draw Selected Ant";
+        }
+    }
     //cycle through the didfferent compass directions
-    //rotate the selected ant
+    //rotate the selected ant use the same code as above just offset the direction by 90 degrees
     //update cell5 with new direction
     //update the selected ant object with the new direction
+}
+
+function pauseAnt(){
+    if(antStarted){
+        if(pauseButtonState==0){
+            document.getElementById("pauseButton").innerHTML = "Resume";
+            pauseButtonState=1;
+        }else if(pauseButtonState==1){
+            document.getElementById("pauseButton").innerHTML = "Pause";
+            pauseButtonState=0;
+            startAnt();
+        }
+    }    
 }
 
 //refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.

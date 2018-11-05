@@ -6,9 +6,10 @@ FIXED--Adjustment bars are currently not being removed upon resizing, need to re
 FIXED--Need to be able to reset page, especially if ant has been placed already
 
 Add writeup about the math behind the process
+--Add instructions/how-to
 
-Write some kind of horizontal control panel for adjusting and displpaying various parameters to replace the single paragraph cells
---Control Panel Added, need to configure the program to accept the new inputs.
+DONE-Write some kind of horizontal control panel for adjusting and displpaying various parameters to replace the single paragraph cells
+FIXED--Control Panel Added, need to configure the program to accept the new inputs.
 
 ???Add aditional pages for Mandlebrot Set, Cantor Set, Koch Lines, and Barnselys Fern???
 
@@ -22,7 +23,7 @@ DONE-Add ability to place multiple ants
 
 DONE-Optimize ant logic for speed. ?Instead of redrawing whole grid just redraw the flipped square?
 
-Add ability to select and rotate ants
+DONE-Add ability to select and rotate ants
 
 DONE-Add ability to start with random colored grid
 
@@ -34,6 +35,7 @@ Refactor and clean up program
 ???Add ability for ant to not go out of bounds but loop back to opposite edge, or bounce off of edge???
 
 ???let user control scale???
+--do this with mouse scroll???
 
 ???hover over coordinates for replication???
 
@@ -57,4 +59,9 @@ bug user can set ants to two, place ants, reset ants to three click start, then 
 DONE-only change to cycleCount if ant has been placed
 //Moved antStartedFlag inside if statement, garunteeing ants have been placed before switching 
 
-Add "please place your ants" to cell5 when done with roate and select function implementation 
+DONE-Add "please place your ants" to cell5 when done with roate and select function implementation 
+
+Clean up cell5 data
+???put responsive icon here???
+
+DONE-Add ability to pause program
