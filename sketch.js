@@ -1,12 +1,18 @@
-//resolution is the side length of the grid squares, any grid variables are responsive to resolution 
+//Resolution is the side length of the grid squares, any grid variables are responsive to resolution 
 var resolution = 10;
 
-//what setting the swap button is on default is 0 "Random Grid" with solid grid displayed, 1 is "Solid Grid" with random grid displayed
+/*What state the swap button is on, default is 0 "Random Grid" with solid grid displayed,
+1 is "Solid Grid" with random grid displayed*/
 var swapButtonState=0;
-
+/*What state the pause button is on, default is 0 "Unpaused" with "Pause" displayed,
+1 is "Paused" with "Resume" displayed*/
 var pauseButtonState=0;
 
-//declaring variables
+/*SelectedAnt is a global element to keep track of which ant has been selected, default to zero
+this is used in the rotateAnt() and selectAnt() functions*/
+var selectedAnt=0;
+
+//Declaring variables
 var gridArray;
 var gridXSize;
 var gridYSize;
@@ -14,38 +20,46 @@ var ant;
 var cycleSpeed;
 var numSlider;
 
-//CMAC Creating color array to be used in ant class
+/*NOTE: If more ants are wanted only need to add colors to the two following arrays and adjust
+the slider limit on the index page*/
+
+//Creating color array to be used in ant class as CSS color codes
 var colorArray=["red","orange","yellow","lawngreen","dodgerblue","darkorchid"];
-//Added with rotate and select function
+/*Creating color array to be used in the select and rotate functions,
+this corresponds to colorArray but show the layman's word for the color selection*/
 var colorArrayUser=["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
-//MAC creating ant array
+
+//AntArray is used to store the created ant objects, added during the multiple ants mod
 var antArray=[];
-//MAC
+
+//Keeps track of how many ants have been placed on the grid
 var currentNumAnts=0;
-//MAC getNumAnts will be linked to user controled slider on the index page 
-//MAC linked succesfully 10/31 1147hrs
+
+/*GetNumAnts linked to user controlled slider2 on the index page , 
+keeps track of how many ants will be placed on the grid*/
 var getNumAnts;
 
-//keeping track of number of movements made by ant
+//Keeping track of number of movements made by ant
 var numOfCycles = 0;
 
-//flag for whether or not the ant has been placed on the grid
+//Flag for whether or not the ant has been placed on the grid
 var antPlacedFlag=false;
 
-//flag for when to change cycle speed to cycle count
+//Flag for when to change cycle speed to cycle count
 var antStarted = false;
 
-//flag for when program has gone out of bounds
+//Flag for when program has gone out of bounds
 var programComplete=false;
 
 
-/*Class for objects residing in the 2-dimensional array, only atrribute they have is .ind which acts as 
+/*Class for objects residing in the 2-dimensional array, only attribute they have is .ind which acts as 
 an on/off or 1/0 indicator of the grid's state*/
 class GridContent {
     constructor(ind) {
         this.ind = ind;
     }
 }
+
 
 /*Class for ant object, has only three attributes x and y location based in pixels and one of four direction
 based on 0 degrees as north*/
@@ -57,22 +71,28 @@ class Ant{
         this.y=y;
         this.direction=0;
     }
-    //returns x coordinate in terms of the grid array indexes rather than pixels
+    //Returns x coordinate in terms of the grid array indexes rather than pixels
     getGridX(){
         var gridX=this.x/resolution;
         return gridX;
     }
-    //returns y coordinate in terms of the grid array indexes rather than pixels
+    //Returns y coordinate in terms of the grid array indexes rather than pixels
     getGridY(){
         var gridY=this.y/resolution;
         return gridY;
     }
-    /*Below are the drawSquare methods, they draw a red filled rectangle thats of side length 
-    resolution, and an appropriately directed arrow based on resolution as well, also sets the 
-    direction of the ant object*/
-    //CMAC add color parameter instead of hard coding "red"
-    //draw square with north arrow
-    //SAR adding side parameter instaead of referring to side
+    /*Below are the drawSquare methods, they draw a color filled square that's of side length 
+    side, and an appropriately directed arrow based on resolution as well, also sets the 
+    direction of the ant object
+    
+    Parameters:
+        x: ants x-coordinate in pixels
+        y: ants y-coordinate in pixels
+        color: ants grid color, can use the colorArray or hard-code this parameter
+        side: side length of the square in pixels
+    */
+    
+    //Draw square with north arrow
     drawSquareNorth(x,y,color,side){
         fill(color);
         rect(x,y,side,side);
@@ -81,7 +101,7 @@ class Ant{
         line(x+(side*.5), y+(side*.1), x+(side*.9), y+(side*.5)); 
         this.direction=0;   
     }
-    //draw square with south arrow
+    //Draw square with south arrow
     drawSquareSouth(x,y,color,side){
         fill(color);
         rect(x,y,side,side);
@@ -90,7 +110,7 @@ class Ant{
         line(x+(side*.5), y+(side*.9), x+(side*.9), y+(side*.5)); 
         this.direction=180;   
     }
-    //draw square with east arrow
+    //Draw square with east arrow
     drawSquareEast(x,y,color,side){
         fill(color);
         rect(x,y,side,side);
@@ -99,7 +119,7 @@ class Ant{
         line(x+(side*.5), y+(side*.1), x+(side*.9), y+(side*.5));
         this.direction=90;    
     }
-    //draw square with west arrow
+    //Draw square with west arrow
     drawSquareWest(x,y,color,side){
         fill(color);
         rect(x,y,side,side);
@@ -112,24 +132,20 @@ class Ant{
 
 
 function setup() {
-    /* canvas dimensions should be able to be divided evenly by resolution if you want grid squares that fill
+    /*NOTE: canvas dimensions should be able to be divided evenly by resolution if you want grid squares that fill
     the canvas equally*/
     
-    //old version
-    //var myCanvas = createCanvas(window.innerWidth-50, window.innerHeight-125);
-    //New version, keeps the diminsions of the canvas divisible by the resolution, this gives an whoole number of grid squares
+    //Creating canvas
+    /*Updated version, keeps the dimensions of the canvas divisible by the resolution,
+    this gives an whole number of grid squares that are displayed instead of fractional grid squares.
+    The hard coded numbers are used to keep the canvas from using the whole screen*/
     var myCanvas = createCanvas(((floor((window.innerWidth-50)/resolution))*resolution), ((floor((window.innerHeight-125)/resolution))*resolution));
-    //setting myCanvas to DOM id="myContainer"
+    //Setting myCanvas to DOM id="myContainer"
     myCanvas.parent("myContainer");
     background(100);
     //Gives variables in terms of array indexes rather than pixels
     gridXSize = width / resolution;
     gridYSize = height / resolution;
-    
-    //Creating Slider
-   /* numSlider = createSlider(1, 450, 150, 0);
-    numSlider.position(width / 2-55, height + 50);
-    numSlider.style("width", "150px");*/
 
     //Cycle speed slider
     numSlider=document.getElementById("slider1");
@@ -140,9 +156,11 @@ function setup() {
 }
 
 function draw() {
+    //The two sliders are in the draw function so any changes made to them is reflected in real time
+
     //Set cycleSpeed to slider value
     cycleSpeed = floor(numSlider.value);
-    //MAC setting user inputted num of ants 
+    //Set getNumAnts to slider2 value
     getNumAnts=numslider2.value;
 
     //Display number of ants
@@ -160,45 +178,43 @@ function draw() {
             }    
         }else{
             document.getElementById("cell1").innerHTML = "Cycle Count";
-            //disable ant count slider
-            numslider2.disabled=true;
         }
     }
 }
 
+/*windowResized() is a P5.js function, this reloads the page when screen/browser size changes. This in turn causes
+the reloaded program to be drawn responsively to new screen/browser size
+
+NOTE: window.location="index.html" was used as it was the only method that would be able to reload 
+the page consistently, all other more standard ways of reload the page from within a javascript program 
+failed repeatedly*/
 function windowResized(){
-    //only way found to consistantly reload page
     window.location="index.html";
 }
 
-
+/*swapGrid() is called on swapButton click, this changes the word displayed on swapButton,
+ swapButtonState, calls createGrid, and redraws any ants that were placed before the button was clicked*/
 function swapGrid(){
+    //Draws random grid
     if(swapButtonState==0){
         document.getElementById("swapButton").innerHTML = "Solid Grid";
         swapButtonState=1;
         createGrid();
-        //MAC
-        /*if(antPlacedFlag){
-            ant.drawSquareNorth(ant.x, ant.y);
-        }*/
-        //MAC
-        //CMAC Change add color parameter
+
+        //Redrawing any ants already placed
         if(currentNumAnts>0){
             for(i=0;i<=currentNumAnts-1;i++){
                 antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
             }
         }
         return;
+     //Draws solid grid   
     }if(swapButtonState==1){
         document.getElementById("swapButton").innerHTML = "Random Grid";
         swapButtonState=0;
         createGrid();
-        //MAC
-        /*if(antPlacedFlag){
-            ant.drawSquareNorth(ant.x, ant.y);
-        }*/
-        //MAC
-        //CMAC Change add color parameter
+
+        //Redrawing any ants already placed
         if(currentNumAnts>0){
             for(i=0;i<=currentNumAnts-1;i++){
                 antArray[i].drawSquareNorth(antArray[i].x,antArray[i].y,colorArray[i],resolution);
@@ -208,7 +224,10 @@ function swapGrid(){
     } 
 }
 
-//Creating two-dimensional array
+/*NOTE: createGrid() function is only called during setup() function and swapGrid() function,
+ fillGrid() function is only called during createGrid() function*/
+
+//Creating two-dimensional array that will be represented by a grid of clickable squares
 function createGrid() {
     gridArray = [];
     for (i = 0; i < gridXSize; i++) {
@@ -219,20 +238,21 @@ function createGrid() {
     }
 }
 
-/*Creating white grid squares with respect to pixels and creating our "state" object 
-in each cell that is initially set to 1 for white.*/
+/*Creating white or random grid squares with size being respect to pixels and creating "state" object 
+in each cell that is initially set to 1 for white, and 1 or 0 for random. 
+grid being solid or random is subject to swapButtonState*/
 function fillGrid(x, y) {
     var fx=x;
     var fy=y;
     var indicator;
+    //Drawing solid grid
     if(swapButtonState==0){
         fill("white");
         rect((fx * resolution), (fy * resolution), resolution, resolution);
         indicator = 1;
         gridArray[fx][fy] = new GridContent(indicator);
     }
-        /*below gives black and white squares, keep for future reference, or
-        if ever want to start langton's ant on a non white grid*/
+    //Drawing random grid
     else if(swapButtonState==1){
         var rand = floor(random(0, 2));
         if (rand == 1) {
@@ -253,34 +273,28 @@ function fillGrid(x, y) {
 //Based on mouse-press event
 function mousePressed() {
     //If the user is inside canvas  
-    //if (mouseX < width && mouseY < height) {
-    //MAC fixed dimension check
     if((mouseX>0&&(mouseX<width))&&(mouseY>0&&(mouseY<height))){    
-        //If the user has placed the ant
-        //MACif(!antPlacedFlag){
-        //MAC
+        //If all ants have not yet been placed
         if(currentNumAnts<getNumAnts){    
-            /*converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
+            /*Converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
             square that was clicked on. This gives a "snapping" effect for grid selection*/
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
-            //Call Ant constructor with pixel x and y using mouseClickX and mouseClickY
-            //MACant=new Ant(mouseClickX, mouseClickY);
-            //MAC push ant objects into array
+            
+            /*Push new ant object into antArray, Ant constructor called with pixel x and y
+             using mouseClickX and mouseClickY*/
             antArray.push(new Ant(mouseClickX, mouseClickY));
-            /*Create default square facing north and set antPlaced flag to true so
-            that this section is only run once*/            
-            //MACant.drawSquareNorth(ant.x, ant.y);
-            //MAC
-            //CMAC Change add color parameter
+            /*Create default square facing north, using currentNumAnts as parameter for all attributes*/            
             antArray[currentNumAnts].drawSquareNorth(antArray[currentNumAnts].x, antArray[currentNumAnts].y,colorArray[currentNumAnts],resolution);
-            //MAC antPlacedFlag=true;
-            //MAC
+           
+            //Increase the number of ants currently on grid
             currentNumAnts++;
-            //MAC
+
+            //If the current number of ants matches the number of ants the user selected on slider2
             if(currentNumAnts==getNumAnts){
+                //This flag will now allow the startAnt() function to run
                 antPlacedFlag=true;
-                //Added when with rotate ant functions
+                //Initializing cell5 content
                 document.getElementById("cell5").innerHTML="Red Ant Selected. &nbsp; Direction: 0"
             }
         }    
@@ -290,30 +304,31 @@ function mousePressed() {
     }
 }
 
+//startAnt() is called on startButton click
 function startAnt(){
     //Timer code, uncomment for testing
     //var start= new Date().getTime();
     
     //try block used to catch when ant goes out of bounds
     try {
-        
-        
-        //console.log("currentNumAnts"+currentNumAnts);
-        //console.log("getNumAnts"+getNumAnts);
-
+        //If the user has placed all ants
         if(antPlacedFlag){
-            //flag for when to change cycle speed to cycle count
+
+            //Flag for when to change cycle speed to cycle count
             antStarted=true;
+
+            //Start, select, rotate, and swap buttons disabled when startAnt() function is running
+            document.getElementById("startButton").disabled=true;
+            document.getElementById("selectAntButton").disabled=true;
+            document.getElementById("rotateAntButton").disabled=true;
+            document.getElementById("swapButton").disabled=true;
+            //Ant count slider disabled when startAnt() function is running
+            numslider2.disabled=true;
+            //Added when with rotate ant functions
+            document.getElementById("cell5").innerHTML=" ";
+                
                 //Ant logic
-                
-                //MAC disbale start button to prevent skipping error
-                document.getElementById("startButton").disabled=true;
-                document.getElementById("selectAntButton").disabled=true;
-                document.getElementById("rotateAntButton").disabled=true;
-                document.getElementById("swapButton").disabled=true;
-                //Added when with rotate ant functions
-                document.getElementById("cell5").innerHTML=" ";
-                
+
                 //V1.1
                 /*Each one of the following statements are very similar. First the ant's current direction is checked, 
                 then the state of the current grid is checked, based on the state of the grid the ant will then turn 
@@ -328,15 +343,10 @@ function startAnt(){
                     V1.1 With seperate refillGrid(): 216.125ms per cycle
                     V1.2 Without seperate refillGriad(): .25ms per cycle
                     Percent Difference: 199.5378%
-                    Percent Decrease: 86,350%
                 
                 Changes made: Instead of redrawing entire grid, just redraw the single changed grid cell.*/
 
-                //Interesting results with (resolution*2)
-
-                //MAC changed all ant. to antArray[i]. and added for loop
-                //CMAC Change added color parameter
-                for(i=0;i<currentNumAnts;i++){
+            for(i=0;i<currentNumAnts;i++){
                 if(antArray[i].direction==0){
                     if(gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind==1){                                     
                         gridArray[antArray[i].getGridX()][antArray[i].getGridY()].ind=0;                    
@@ -418,8 +428,11 @@ function startAnt(){
                 var seconds= end- start;
                 console.log("Milli-seconds Ellapsed:" + seconds);*/
 
-                /*Calling the function again with a small time delay, this or a for loop with a limit is 
-                needed so there is no runaway calculations*/
+                /*Calling the function again with a small time delay based on user controlled cycleSpeed,
+                this or a for loop with a limit is needed so there is no runaway calculations.
+                This is subject to pauseButtonState, after program is paused pasueButtonState becomes 1,
+                this only allows startAnt to run once when the pause button has been pressed,
+                when button is unpaused the program cycles as normal based on cycleSpeed*/
                 if(pauseButtonState==1){
                     return;
                 }else{
@@ -427,61 +440,35 @@ function startAnt(){
                 }    
         }
     }catch(err){
-        //flag used to stop the draw function override on cell1 and cell2
+        //Flag used to stop the draw function override on cell1 and cell2
         programComplete=true;
-        //console.log(err);
+        //Displaying program complete and showing total number of cycles complated before termination
         document.getElementById("cell1").innerHTML="Program Complete";
         document.getElementById("cell2").innerHTML="Total Cycles: "+numOfCycles;
     }      
 }
 
-//
-//Below is the new code added for the rotate and select function, variables have been kept isolated for troubleshooting
-//
-
-//only run if ants have been placed
-//disable buttons once startAnt has been called
-//need a global element to keep track of which ant has been selected, default to zero
-var selectedAnt=0; 
-//re adjusting the size of the ant object for better display in cell5, this is entirely seperate from regular resolution and may be adjusted as needed here
-var cellResolution=10;
+//selectAnt() is called on selectButton click
 function selectAnt(){
-    if(antPlacedFlag){
-        
+    //If all ants have been placed
+    if(antPlacedFlag){       
         selectedAnt++;
+        /*Reverting selectedAnt back to zero if it increases above the number of ants on the grid
+        selectedAnt is based on antArray index so it will be between 0 and currentNumAnts*/
         if(selectedAnt==currentNumAnts){
             selectedAnt=0;
         }
-        
-        document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
-        
-        //Below draws the ant object into cell5
-        //Just 1st attempt, may need to adjust coordinates we are sending to match those of cell5
-        //1st attempt results in undefined
-        //May just need to save the squares as icons and display the icons???
-        /*if(antArray[selectedAnt].direction==0){
-            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareNorth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);
-        }else if(antArray[selectedAnt].direction==90){
-            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareEast(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);            
-        }else if(antArray[selectedAnt].direction==180){
-            //document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareSouth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);         
-        }else if(antArray[selectedAnt].direction==270){
-           // document.getElementById("cell5").innerHTML=antArray[selectedAnt].drawSquareWest(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],cellResolution);
-        }else{
-            document.getElementById("cell5").innerHTML="Unable to Draw Selected Ant";
-        }*/
-
-        //cycle through ants based on current ants
-        
-        //display ant in cell5 of the index page 
-        //document.getElementById("cell5").innerHTML=selectedAnt;
-        
+        //Updateing cell5
+        document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;        
     }
 }
 
+//rotateAnt() is called on rotateButton click
 function rotateAnt(){
-    //"Red Ant Selected. &nbsp; Direction: 0"
+    //If all ants have been placed
     if(antPlacedFlag){
+        /*The code below checks the selected ants direction, redraws it 90 degrees to the right [which updates
+        its' direction], and updates cell5*/
         if(antArray[selectedAnt].direction==0){
             antArray[selectedAnt].drawSquareEast(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
             document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
@@ -495,26 +482,31 @@ function rotateAnt(){
             antArray[selectedAnt].drawSquareNorth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
             document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
         }else{
+            //If error in above code block
             document.getElementById("cell5").innerHTML="Unable to Draw Selected Ant";
         }
     }
-    //cycle through the didfferent compass directions
-    //rotate the selected ant use the same code as above just offset the direction by 90 degrees
-    //update cell5 with new direction
-    //update the selected ant object with the new direction
 }
 
+/*pauseAnt() is called on pauseButton click, this changes the word displayed on pauseButton,
+ pauseButtonState, and calls startAnt() if button has been unpaused*/
 function pauseAnt(){
-    if(antStarted){
-        if(pauseButtonState==0){
-            document.getElementById("pauseButton").innerHTML = "Resume";
-            pauseButtonState=1;
-        }else if(pauseButtonState==1){
-            document.getElementById("pauseButton").innerHTML = "Pause";
-            pauseButtonState=0;
-            startAnt();
-        }
-    }    
+    //If ants still in bound
+    if(!programComplete){
+        //If startAnt() has been started
+        if(antStarted){
+            //If paused
+            if(pauseButtonState==0){
+                document.getElementById("pauseButton").innerHTML = "Resume";
+                pauseButtonState=1;
+            //If unpaused    
+            }else if(pauseButtonState==1){
+                document.getElementById("pauseButton").innerHTML = "Pause";
+                pauseButtonState=0;
+                startAnt();
+            }
+        } 
+    }       
 }
 
 //refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.

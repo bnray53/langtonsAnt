@@ -28,6 +28,7 @@ DONE-Add ability to select and rotate ants
 DONE-Add ability to start with random colored grid
 
 Refactor and clean up program
+--rename some of the unclear variables
 --???Have classes, setup/draw, and startAnt in different folders???
 
 ???Remove click inside area warning???
@@ -65,3 +66,5 @@ Clean up cell5 data
 ???put responsive icon here???
 
 DONE-Add ability to pause program
+
+Have autopilot version that places, rotates, and runs without need for user input
