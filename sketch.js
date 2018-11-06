@@ -18,7 +18,7 @@ var gridXSize;
 var gridYSize;
 var ant;
 var cycleSpeed;
-var numSlider;
+var cycleSpeedSlider;
 
 /*NOTE: If more ants are wanted only need to add colors to the two following arrays and adjust
 the slider limit on the index page*/
@@ -35,7 +35,7 @@ var antArray=[];
 //Keeps track of how many ants have been placed on the grid
 var currentNumAnts=0;
 
-/*GetNumAnts linked to user controlled slider2 on the index page , 
+/*GetNumAnts linked to user controlled countSlider on the index page , 
 keeps track of how many ants will be placed on the grid*/
 var getNumAnts;
 
@@ -148,9 +148,9 @@ function setup() {
     gridYSize = height / resolution;
 
     //Cycle speed slider
-    numSlider=document.getElementById("slider1");
+    cycleSpeedSlider=document.getElementById("speedSlider");
     //Ant count slider
-    numslider2=document.getElementById("slider2");
+    antCountSlider=document.getElementById("countSlider");
     //Drawing initial grid
     createGrid();
 }
@@ -159,25 +159,25 @@ function draw() {
     //The two sliders are in the draw function so any changes made to them is reflected in real time
 
     //Set cycleSpeed to slider value
-    cycleSpeed = floor(numSlider.value);
-    //Set getNumAnts to slider2 value
-    getNumAnts=numslider2.value;
+    cycleSpeed = floor(cycleSpeedSlider.value);
+    //Set getNumAnts to countSlider value
+    getNumAnts=antCountSlider.value;
 
     //Display number of ants
-    document.getElementById("cell4").innerHTML=numslider2.value;
+    document.getElementById("numAntsCellData").innerHTML=antCountSlider.value;
 
     //If program is in bounds
     if(!programComplete){
         //Change cycle speed to cycle count after startAnt() has started
         if(!antStarted){
-            document.getElementById("cell1").innerHTML = "Time Between Cycles";
+            document.getElementById("cycleCell").innerHTML = "Time Between Cycles";
             if(cycleSpeed>10){
-                document.getElementById("cell2").innerHTML = cycleSpeed+"ms";
+                document.getElementById("cycleCellData").innerHTML = cycleSpeed+"ms";
             }else{
-                document.getElementById("cell2").innerHTML = "Gone to Plaid";
+                document.getElementById("cycleCellData").innerHTML = "Gone to Plaid";
             }    
         }else{
-            document.getElementById("cell1").innerHTML = "Cycle Count";
+            document.getElementById("cycleCell").innerHTML = "Cycle Count";
         }
     }
 }
@@ -290,12 +290,12 @@ function mousePressed() {
             //Increase the number of ants currently on grid
             currentNumAnts++;
 
-            //If the current number of ants matches the number of ants the user selected on slider2
+            //If the current number of ants matches the number of ants the user selected on countSlider
             if(currentNumAnts==getNumAnts){
                 //This flag will now allow the startAnt() function to run
                 antPlacedFlag=true;
-                //Initializing cell5 content
-                document.getElementById("cell5").innerHTML="Red Ant Selected. &nbsp; Direction: 0"
+                //Initializing antDirectionCellData content
+                document.getElementById("antDirectionCellData").innerHTML="Red Ant Selected. &nbsp; Direction: 0"
             }
         }    
     }else {
@@ -323,9 +323,9 @@ function startAnt(){
             document.getElementById("rotateAntButton").disabled=true;
             document.getElementById("swapButton").disabled=true;
             //Ant count slider disabled when startAnt() function is running
-            numslider2.disabled=true;
+            antCountSlider.disabled=true;
             //Added when with rotate ant functions
-            document.getElementById("cell5").innerHTML=" ";
+            document.getElementById("antDirectionCellData").innerHTML=" ";
                 
                 //Ant logic
 
@@ -421,7 +421,7 @@ function startAnt(){
             }
                 //Updating the displayed number of cycles
                 numOfCycles++;
-                document.getElementById("cell2").innerHTML=numOfCycles;
+                document.getElementById("cycleCellData").innerHTML=numOfCycles;
 
                 //Timer code, uncomment for testing
                 /*var end= new Date().getTime();
@@ -440,11 +440,11 @@ function startAnt(){
                 }    
         }
     }catch(err){
-        //Flag used to stop the draw function override on cell1 and cell2
+        //Flag used to stop the draw function override on cycleCell and cycleCellData
         programComplete=true;
         //Displaying program complete and showing total number of cycles complated before termination
-        document.getElementById("cell1").innerHTML="Program Complete";
-        document.getElementById("cell2").innerHTML="Total Cycles: "+numOfCycles;
+        document.getElementById("cycleCell").innerHTML="Program Complete";
+        document.getElementById("cycleCellData").innerHTML="Total Cycles: "+numOfCycles;
     }      
 }
 
@@ -458,8 +458,8 @@ function selectAnt(){
         if(selectedAnt==currentNumAnts){
             selectedAnt=0;
         }
-        //Updateing cell5
-        document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;        
+        //Updateing antDirectionCellData
+        document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;        
     }
 }
 
@@ -468,22 +468,22 @@ function rotateAnt(){
     //If all ants have been placed
     if(antPlacedFlag){
         /*The code below checks the selected ants direction, redraws it 90 degrees to the right [which updates
-        its' direction], and updates cell5*/
+        its' direction], and updates antDirectionCellData*/
         if(antArray[selectedAnt].direction==0){
             antArray[selectedAnt].drawSquareEast(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
-            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+            document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
         }else if(antArray[selectedAnt].direction==90){
             antArray[selectedAnt].drawSquareSouth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);            
-            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+            document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
         }else if(antArray[selectedAnt].direction==180){
             antArray[selectedAnt].drawSquareWest(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);         
-            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+            document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
         }else if(antArray[selectedAnt].direction==270){
             antArray[selectedAnt].drawSquareNorth(antArray[selectedAnt].x,antArray[selectedAnt].y,colorArray[selectedAnt],resolution);
-            document.getElementById("cell5").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
+            document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;
         }else{
             //If error in above code block
-            document.getElementById("cell5").innerHTML="Unable to Draw Selected Ant";
+            document.getElementById("antDirectionCellData").innerHTML="Unable to Draw Selected Ant";
         }
     }
 }

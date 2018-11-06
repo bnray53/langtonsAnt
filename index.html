@@ -17,7 +17,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-        
+
     <style>
         body {
             padding: 0;
@@ -114,10 +114,10 @@
             <div class="row" id="cellData">
                 <div class="col-md-4">
                     <p>
-                        <input type="range" min="0" max="450" step="10" value="50" id="slider1">
+                        <input type="range" min="0" max="450" step="10" value="50" id="speedSlider">
                     </p>
-                    <p id="cell1">Number of Cycles</p>
-                    <p id="cell2">&nbsp;</p>
+                    <p id="cycleCell">&nbsp;</p>
+                    <p id="cycleCellData">&nbsp;</p>
                 </div>
                 <div class="col-md-2">
                     <p>
@@ -132,7 +132,7 @@
                         <p> <!--Switch btn-xs for smaller buttons-->
                             <button type="button" class="btn btn-default btn" id="rotateAntButton" onclick="rotateAnt()">Rotate Ant</button>
                         </p>
-                        <p id="cell5">
+                        <p id="antDirectionCellData">
                             Please Place Your Ants On The Grid
                         </p>
                     </div> 
@@ -141,10 +141,10 @@
                 
                 <div class="col-md-4">
                         <p>
-                             <input type="range" min="1" max="6" step="1" value="1" id="slider2">
+                             <input type="range" min="1" max="6" step="1" value="1" id="countSlider">
                         </p>
-                         <p id="cell3">Number of Ants</p>
-                        <p id="cell4">&nbsp;</p>
+                         <p id="numAntsCell">Number of Ants</p>
+                        <p id="numAntsCellData">&nbsp;</p>
                 </div>
             
             </div>

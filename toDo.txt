@@ -5,8 +5,7 @@ FIXED--Elements are currently responsive, but need to keep the number of block d
 FIXED--Adjustment bars are currently not being removed upon resizing, need to reload page to clear.
 FIXED--Need to be able to reset page, especially if ant has been placed already
 
-Add writeup about the math behind the process
---Add instructions/how-to
+DONE-Add writeup about the math behind the process
 
 DONE-Write some kind of horizontal control panel for adjusting and displpaying various parameters to replace the single paragraph cells
 FIXED--Control Panel Added, need to configure the program to accept the new inputs.
@@ -27,16 +26,16 @@ DONE-Add ability to select and rotate ants
 
 DONE-Add ability to start with random colored grid
 
-Refactor and clean up program
---rename some of the unclear variables
---???Have classes, setup/draw, and startAnt in different folders???
+DONE-Refactor and clean up program
+FIXED--rename some of the unclear variables
 
 ???Remove click inside area warning???
 
 ???Add ability for ant to not go out of bounds but loop back to opposite edge, or bounce off of edge???
 
 ???let user control scale???
---do this with mouse scroll???
+--???do this with mouse scroll???
+--???do this based on screen width???
 
 ???hover over coordinates for replication???
 
@@ -62,9 +61,12 @@ DONE-only change to cycleCount if ant has been placed
 
 DONE-Add "please place your ants" to cell5 when done with roate and select function implementation 
 
-Clean up cell5 data
+Clean up antDirectionCellData cell data
 ???put responsive icon here???
 
 DONE-Add ability to pause program
 
 Have autopilot version that places, rotates, and runs without need for user input
+
+Add instructions/how-to
+???Have in main page or have on button click???
