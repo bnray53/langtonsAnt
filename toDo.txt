@@ -69,7 +69,10 @@ Have autopilot version that places, rotates, and runs without need for user inpu
 Add instructions/how-to
 ???Have in main page or have on button click???
 
-scrrenResize having issues for mobile devices, temporarily turned off screenResize function
+ON-HOLD-screenResize having issues for mobile devices, temporarily turned off screenResize function
+--Due to problems involving click events, mobile browser support of bootstrap and P5.js, and 
+--canvas diminsions on mobile screens, it is not practical or feasible at this time to optimize
+--for mobile devices. In future may use the code logic in a mobile app for support on mobile devices
 
 DONE-update line 327
 
@@ -84,7 +87,9 @@ Priority Issues:
 DONE-1: allow user to adjust resolution
 DONE-2: hover over coordinates
 3: ???fix screen-resize for mobile devices???
+--Due to problems involving click events, mobile browser support of bootstrap and P5.js, and 
+--canvas diminsions on mobile screens, it is not practical or feasible at this time to optimize
+--for mobile devices. In future may use the code logic in a mobile app for support on mobile devices
 4: save data for replication
+-???Have a repeat or share function???
 5: instructions/how-to
-
-fix screen rezize 
