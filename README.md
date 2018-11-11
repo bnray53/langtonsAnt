@@ -8,17 +8,18 @@
 ### Examples
 - Below is an example of Langton&apos;s Highway plotted using Langton&apos;s Ant. Starting with just one ant after about 11,000 cycles a pattern will begin to emerge known as Langton&apos;s Highway.
 
-![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/newLangtonsHighway.PNG)
+![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/langtonsHighway.PNG)
 
 - Below is an example of a symmetric pattern plotted using Langton&apos;s Ant with four starting ants.
 
-![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/fourAntPattern.PNG)
+![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/fourAntPattern2.PNG)
 
 ### Live Demo
 [Langton&apos;s Ant](http://www.biketq.com/langtonsAnt.html "Langton's Ant")
 
 ### How To
 - Use the slider to select how many ants you want to place on the grid.
+- Select "Zoom" button to cycle through different screen resolutions.
 - Place your starting ant/s anywhere on the grid.
 - You can select and rotate the ant/s with the appropriate buttons.
 - If a random grid is preferred select the "Random Grid" button, to return to a solid grid select the "Solid Grid" button.
