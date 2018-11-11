@@ -205,16 +205,9 @@ function draw() {
     }
 }
 
-/*windowResized() is a P5.js function, this reloads the page when screen/browser size changes. This in turn causes
-the reloaded program to be drawn responsively to new screen/browser size
-
-NOTE: window.location="index.html" was used as it was the only method that would be able to reload 
-the page consistently, all other more standard ways of reload the page from within a javascript program 
-failed repeatedly*/
+/*windowResized() is a P5.js function, this calls setup() when screen/browser size changes. This in turn causes
+the program to be drawn responsively to new screen/browser size*/
 function windowResized(){
-    //Removed in first live run due to problems with mobile browsers
-    //if(width<height||width>height)
-    //window.location="index.html";
     setup();
 }
 
