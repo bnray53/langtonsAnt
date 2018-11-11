@@ -1,7 +1,7 @@
 # langtonsAnt
 
 ### About
-- Langton&apos;s Ant is based on the mathematical subset of Discrete Math related to Cellular Automatons.
+- Langton&apos;s Ant is based on the mathematical subset of discrete math related to cellular automatons.
 - This application can be used to demonstrate Langton&apos;s Highway as pictured below, as well as a number of unique or random patterns that result from placing multiple ants and varying their starting direction.
 - This application works by having the user pick a starting point for the ant/s and starting the simulation. The ant/s will then move left or right depending on the color of the grid it currently resides on. Left if it&apos;s on a black grid, right if it&apos;s on a white grid. The ant will then advance on grid in the chosen direction by one grid space and flip the color of the grid it just left. 
 
