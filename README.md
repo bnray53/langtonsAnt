@@ -8,11 +8,11 @@
 ### Examples
 - Below is an example of Langton&apos;s Highway plotted using Langton&apos;s Ant. Starting with just one ant after about 11,000 cycles a pattern will begin to emerge known as Langton&apos;s Highway.
 
-![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/langtonsHighway.PNG)
+![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/master/langtonsHighway.PNG)
 
 - Below is an example of a symmetric pattern plotted using Langton&apos;s Ant with four starting ants.
 
-![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/multipleAntsMod/fourAntPattern2.PNG)
+![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/master/fourAntPattern2.PNG)
 
 ### Live Demo
 [Langton&apos;s Ant](http://www.biketq.com/langtonsAnt.html "Langton's Ant")
