@@ -33,11 +33,9 @@ FIXED--rename some of the unclear variables
 
 ???Add ability for ant to not go out of bounds but loop back to opposite edge, or bounce off of edge???
 
-???let user control scale???
---???do this with mouse scroll???
---???do this based on screen width???
+DONE-let user control scale
 
-???hover over coordinates for replication???
+DONE-hover over coordinates for replication
 
 DONE-save number of cycles
 
@@ -70,3 +68,23 @@ Have autopilot version that places, rotates, and runs without need for user inpu
 
 Add instructions/how-to
 ???Have in main page or have on button click???
+
+scrrenResize having issues for mobile devices, temporarily turned off screenResize function
+
+DONE-update line 327
+
+report bug component
+
+allow user to adjust resolution and map current ant location to new grid.
+
+???add a block that shows where the users mouse currently is???
+--Joey's idea
+
+Priority Issues:
+DONE-1: allow user to adjust resolution
+DONE-2: hover over coordinates
+3: ???fix screen-resize for mobile devices???
+4: save data for replication
+5: instructions/how-to
+
+fix screen rezize 

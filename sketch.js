@@ -139,7 +139,11 @@ function setup() {
     /*Updated version, keeps the dimensions of the canvas divisible by the resolution,
     this gives an whole number of grid squares that are displayed instead of fractional grid squares.
     The hard coded numbers are used to keep the canvas from using the whole screen*/
-    var myCanvas = createCanvas(((floor((window.innerWidth-50)/resolution))*resolution), ((floor((window.innerHeight-125)/resolution))*resolution));
+    var myCanvas = createCanvas(((floor((window.innerWidth-50)/resolution))*resolution), ((floor((window.innerHeight-135)/resolution))*resolution));
+    console.log("Width");
+    console.log(((floor((window.innerWidth-50)/resolution))*resolution));
+    console.log("Height");
+    console.log(((floor((window.innerHeight-125)/resolution))*resolution));
     //Setting myCanvas to DOM id="myContainer"
     myCanvas.parent("myContainer");
     background(100);
@@ -166,6 +170,25 @@ function draw() {
     //Display number of ants
     document.getElementById("numAntsCellData").innerHTML=antCountSlider.value;
 
+    //Displaying Coordinates
+    //If mouse is inside grid
+    if((mouseX>0&&(mouseX<width))&&(mouseY>0&&(mouseY<height))){
+        //If program has not started started
+        if(!antStarted){
+            document.getElementById("coordinateCellData").innerHTML= "Current Coordinates: &nbsp; ("+(mouseX-(mouseX%resolution))+","+(mouseY-(mouseY%resolution))+")";
+        //If mouse is inside grid and program is started 
+        }else{
+            document.getElementById("coordinateCellData").innerHTML= "&nbsp;";
+        }
+    //If mouse is outside grid and program not started    
+    }else if(!antStarted){
+        document.getElementById("coordinateCellData").innerHTML= "Current Coordinates: &nbsp; Out of Bounds";
+    //If mouse is outside grid and program is started 
+    }else{
+        document.getElementById("coordinateCellData").innerHTML= "&nbsp;";
+    }
+
+    //Displaying cycle speed and count
     //If program is in bounds
     if(!programComplete){
         //Change cycle speed to cycle count after startAnt() has started
@@ -189,7 +212,10 @@ NOTE: window.location="index.html" was used as it was the only method that would
 the page consistently, all other more standard ways of reload the page from within a javascript program 
 failed repeatedly*/
 function windowResized(){
-    window.location="index.html";
+    //Removed in first live run due to problems with mobile browsers
+    //if(width<height||width>height)
+    //window.location="index.html";
+    setup();
 }
 
 /*swapGrid() is called on swapButton click, this changes the word displayed on swapButton,
@@ -275,11 +301,15 @@ function mousePressed() {
     //If the user is inside canvas  
     if((mouseX>0&&(mouseX<width))&&(mouseY>0&&(mouseY<height))){    
         //If all ants have not yet been placed
-        if(currentNumAnts<getNumAnts){    
+        if(currentNumAnts<getNumAnts){ 
+            //Disabling zoom button as it would reset all user placement of ants   
+            document.getElementById("zoomButton").disabled=true;
             /*Converting the mouseClick pixel coordinates to the correct pixel coordinates for the 
             square that was clicked on. This gives a "snapping" effect for grid selection*/
             var mouseClickX=mouseX-(mouseX%resolution);
             var mouseClickY=mouseY-(mouseY%resolution);
+            console.log(mouseClickX);
+            console.log(mouseClickY);
             
             /*Push new ant object into antArray, Ant constructor called with pixel x and y
              using mouseClickX and mouseClickY*/
@@ -324,7 +354,7 @@ function startAnt(){
             document.getElementById("swapButton").disabled=true;
             //Ant count slider disabled when startAnt() function is running
             antCountSlider.disabled=true;
-            //Added when with rotate ant functions
+            //Change antDirectionCellData to blank when program started
             document.getElementById("antDirectionCellData").innerHTML=" ";
                 
                 //Ant logic
@@ -458,7 +488,7 @@ function selectAnt(){
         if(selectedAnt==currentNumAnts){
             selectedAnt=0;
         }
-        //Updateing antDirectionCellData
+        //Updating antDirectionCellData
         document.getElementById("antDirectionCellData").innerHTML=colorArrayUser[selectedAnt]+" Ant Selected. &nbsp; Direction: "+antArray[selectedAnt].direction;        
     }
 }
@@ -508,6 +538,23 @@ function pauseAnt(){
         } 
     }       
 }
+
+//zoom() is called on zoomButton click, this changes the resolution which gives a zoom effect
+function zoom(){
+    switch(resolution){
+        case 10:
+            resolution=8;
+            setup();
+            break;
+        case 8:
+            resolution=6;
+            setup();
+            break;
+        default:
+            resolution=10;
+            setup();            
+    }
+}  
 
 //refillGrid() was commented out during V1.2 optimization, keep the code for use in other projects.
 
