@@ -15,7 +15,7 @@
 ![picture of Langton's Ant](https://github.com/bnray53/langtonsAnt/blob/master/fourAntPattern2.PNG)
 
 ### Live Demo
-[Langton&apos;s Ant](http://www.biketq.com/langtonsAnt.html "Langton's Ant")
+[Langton&apos;s Ant](https://bnray53.github.io/langtonsAnt "Langton's Ant")
 
 ### How To
 - Use the slider to select how many ants you want to place on the grid.
